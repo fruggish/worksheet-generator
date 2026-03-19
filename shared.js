@@ -118,7 +118,7 @@ function showPrompt(promptText) {
   btn.classList.remove('copied');
 }
 
-function buildBasePrompt({ skillLine, level, formats, test, draft, struggling, category, sessionType }) {
+function buildBasePrompt({ skillLine, level, formats, test, draft, struggling, category, sessionType, scoreSection }) {
   const formatLine = formats.length === 1
     ? formats[0]
     : formats.slice(0, -1).join(', ') + ', and ' + formats[formats.length - 1];
@@ -164,7 +164,7 @@ ${categoryLine}
 SKILL(S): ${skillLine}
 FORMAT: ${formatLine}
 NUMBER OF QUESTIONS: ${qty}
-${testSection}${draftSection}${strugglingSection}
+${testSection}${scoreSection || ''}${draftSection}${strugglingSection}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 REQUIREMENTS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -180,14 +180,29 @@ OUTPUT STRUCTURE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 1. WORKSHEET — student-facing questions only. No answers visible. When multiple questions share the same passage or source material, group them together with a clear header above the passage: "For questions [X–Y], use the following passage." The passage appears in full before the first question in the group. Do not repeat the passage between questions in the same group.
+Close this section with: [Compliance: Worksheet — X questions, passage grouping applied Y/N, no answers visible Y/N]
 
 2. ANSWER KEY — correct answer + one-sentence rule explanation per question.
+Close this section with: [Compliance: Answer Key — X entries, rule named for each Y/N]
 
-3. STUDY TIPS & SELF-CHECK — fits on one printed page. Do not explain or teach the concept. Write directly to the student using "you" language.
+3. STUDY TIPS & SELF-CHECK — fits on up to two printed pages. Do not explain or teach the concept. Write directly to the student using "you" language.
    a. TIPS (3–5 items): One sentence each. Practical strategies for this specific skill only — what to do, look for, or try when stuck. No theory.
    b. SELF-CHECK (3–4 items): One sentence each. Questions the student asks themselves before submitting. Actionable and specific to this skill.
+Close this section with: [Compliance: Study Tips — X tips, Y checklist items, student-facing language Y/N]
 
 Perform a silent internal audit before producing any output: confirm no invented facts or sources, no ghostwriting, all questions match the skill(s) listed, and any shared passages or source material appear once above the first question in their group with a correct "For questions [X–Y]" header. Fix any issues before outputting. Do not include a visible audit section in the output.
 
 After all three sections, format the complete output as a Word document (.docx) and offer it for download.`;
+}
+
+function getScore() {
+  const el = document.getElementById('score-input');
+  return el ? el.value.trim() : '';
+}
+
+function buildScoreSection(scoreText, testConfig) {
+  if (!scoreText) return '';
+  return `\nSTUDENT SCORE: ${scoreText}
+${testConfig.context}
+Use this score to calibrate difficulty, prioritize the skill gaps most predictive of this score range, and weight question selection accordingly. If the score field is blank, rely on the skill level and difficulty settings above.\n`;
 }

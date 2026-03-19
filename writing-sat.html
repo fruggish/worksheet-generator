@@ -43,6 +43,12 @@
       <div style="margin-top:6px;"><div style="font-size:11px;color:var(--gray-3);margin-bottom:4px;">Optional: add more context</div><input type="text" id="custom-level" placeholder="Optional: e.g. 'aiming for 650+' or 'test in 2 weeks'"></div>
     </div>
 
+    <div class="field">
+      <div class="field-label">SAT Reading & Writing Score <span class="badge">optional</span></div>
+      <div class="field-hint">Scale: 200–800. Avg: ~520. Benchmark: 480 (college readiness). If blank, skill level and difficulty are used instead.</div>
+      <input type="text" id="score-input" placeholder="e.g. 510" style="max-width:120px;">
+    </div>
+
     <div class="field" id="field-skills">
       <div class="field-label">SAT R&W Skills <span class="badge">required</span></div>
       <div class="field-hint">Core skills tested on SAT Reading & Writing. Select one or more.</div>
@@ -205,12 +211,15 @@
     if (!skills.length) { document.getElementById('field-skills').classList.add('error'); ok = false; }
     if (!getFormats().length) { document.getElementById('field-format').classList.add('error'); ok = false; }
     if (!ok) return;
+    const scoreSection = buildScoreSection(getScore(), {
+      context: 'SAT Reading & Writing score scale: 200–800. Below 480 = below college-readiness benchmark. 480–560 = approaching benchmark; typical gaps in grammar in context, sentence boundaries, and transitions. 560–650 = on track; typical gaps in rhetorical synthesis and inference. 650–800 = strong; focus on cross-text connections, words in context at high nuance, and advanced inference. Calibrate difficulty and skill weighting to match this score range.'
+    });
     showPrompt(buildBasePrompt({
       skillLine: skills.length === 1 ? `Focused skill: ${skills[0]}` : `Multiple skills: ${skills.join(', ')}`,
       level: getLevel(), formats: getFormats(), test: TEST_NAME,
       draft: document.getElementById('draft-text').value.trim(),
       struggling: document.getElementById('struggling-text').value.trim(),
-      category: '', sessionType: 'writing'
+      category: '', sessionType: 'writing', scoreSection
     }));
   }
 </script>

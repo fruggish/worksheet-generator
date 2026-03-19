@@ -48,9 +48,9 @@
       <div class="field-hint">Select a category to see available skills.</div>
       <select id="select-category" onchange="onCategoryChange()">
         <option value="">— Select a category —</option>
-        <option value="Reading Comprehension">Reading Comprehension</option>
-        <option value="Grammar Knowledge">Grammar Knowledge</option>
-        <option value="Composition Skills">Composition Skills</option>
+        <option value="Reading">Reading</option>
+        <option value="Grammar">Grammar</option>
+        <option value="Writing">Writing</option>
       </select>
       <div class="val-msg" id="val-category">Please select a category.</div>
     </div>
@@ -133,7 +133,7 @@
   let mode = 'single';
 
   const categorySkillMap = {
-    'Reading Comprehension': [
+    'Reading': [
       {skill:'Central idea & main details',label:'Central idea & main details'},
       {skill:'Inference & interpretation',label:'Inference & interpretation'},
       {skill:"Author's purpose & point of view",label:"Author's purpose & POV"},
@@ -146,7 +146,7 @@
       {skill:'Evaluating arguments & claims',label:'Evaluating arguments & claims'},
       {skill:'Comparing arguments across texts',label:'Comparing arguments across texts'}
     ],
-    'Grammar Knowledge': [
+    'Grammar': [
       {skill:'Comma splices & punctuation',label:'Comma splices & punctuation'},
       {skill:'Sentence boundaries & punctuation',label:'Sentence boundaries'},
       {skill:'Grammar in context — within passages',label:'Grammar in context'},
@@ -154,7 +154,7 @@
       {skill:'Transitions',label:'Transitions'},
       {skill:'Words in context — grammar usage',label:'Words in context (grammar)'}
     ],
-    'Composition Skills': [
+    'Writing': [
       {skill:'Thesis construction',label:'Thesis construction'},
       {skill:'Thesis evaluation',label:'Thesis evaluation'},
       {skill:'Thesis revision',label:'Thesis revision'},

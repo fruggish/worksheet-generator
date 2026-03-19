@@ -40,6 +40,13 @@
       <div class="val-msg" id="val-level">Please select a skill level.</div>
       <div style="margin-top:6px;"><div style="font-size:11px;color:var(--gray-3);margin-bottom:4px;">Optional: add more context</div><input type="text" id="custom-level" placeholder="Optional: e.g. 'needs to pass TSI to enroll' or 'retesting'"></div>
     </div>
+
+    <div class="field">
+      <div class="field-label">TSI Math Score <span class="badge">optional</span></div>
+      <div class="field-hint">TSIA2 (2021–present): passing = 950+. Old TSI: scale 310–390, passing = 350+. If blank, skill level and difficulty are used instead.</div>
+      <input type="text" id="score-input" placeholder="e.g. 918" style="max-width:120px;">
+    </div>
+
     <div class="field" id="field-skills">
       <div class="field-label">TSI Math Skills <span class="badge">required</span></div>
       <div class="field-hint">Core skills tested on the TSI Math section. Select one or more.</div>
@@ -157,6 +164,8 @@
     const formatLine=formats.length===1?formats[0]:formats.slice(0,-1).join(', ')+', and '+formats[formats.length-1];
     const struggling=document.getElementById('struggling-text').value.trim();
     const sample=document.getElementById('draft-text').value.trim();
+    const score=getScore();
+    const scoreBlock=score?`\nSTUDENT SCORE: ${score}\nTSI Math score context: TSIA2 (current, 2021–present) passing benchmark = 950. Below 910 = significant foundational gaps. 910–949 = approaching passing; target quantitative and algebraic reasoning. Old TSI (pre-2021) scale: 310–390, passing = 350+. Use this score to calibrate difficulty and prioritize the skill gaps most predictive of this score range.\n`:'';
     const difficultyLine={foundational:'All problems should be foundational and confidence-building.',mixed:'Progress from foundational problems to more challenging ones.',challenging:'Emphasize challenging problems typical of the harder end of the TSI Math section.'}[difficulty];
     showPrompt(`You are a math tutor assistant helping a student prepare for the ${TEST_NAME}. Generate a student-facing practice worksheet.
 
@@ -177,7 +186,7 @@ WORKSHEET DETAILS
 SKILL(S): ${skills.join(', ')}
 FORMAT: ${formatLine}
 NUMBER OF PROBLEMS: ${qty}
-${struggling?`\nSPECIFIC STRUGGLES:\n${struggling}\nPrioritize problems that directly address these patterns.\n`:''}${sample?`\nSAMPLE PROBLEM / STUDENT WORK:\n${sample}\nBuild at least 3 problems around this example or error pattern.\n`:''}
+${scoreBlock}${struggling?`\nSPECIFIC STRUGGLES:\n${struggling}\nPrioritize problems that directly address these patterns.\n`:''}${sample?`\nSAMPLE PROBLEM / STUDENT WORK:\n${sample}\nBuild at least 3 problems around this example or error pattern.\n`:''}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 REQUIREMENTS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -196,10 +205,13 @@ OUTPUT STRUCTURE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 1. WORKSHEET — student-facing problems only. No answers visible. When multiple problems share the same data set, table, chart, or scenario, group them together with a clear header above the shared material: "For problems [X–Y], use the following [table/chart/scenario]." The shared material appears in full before the first problem in the group. Do not repeat it between problems in the same group.
+Close this section with: [Compliance: Worksheet — X problems, shared material grouped Y/N, no answers visible Y/N]
 2. ANSWER KEY — complete step-by-step solution per problem. For MC, explain why each wrong answer is wrong.
-3. STUDY TIPS & SELF-CHECK — fits on one printed page. Do not explain or teach the concept. Write directly to the student using "you" language.
+Close this section with: [Compliance: Answer Key — X entries, step-by-step solution provided Y/N]
+3. STUDY TIPS & SELF-CHECK — fits on up to two printed pages. Do not explain or teach the concept. Write directly to the student using "you" language.
    a. TIPS (3–5 items): One sentence each. Practical strategies for this specific skill only — what to do, look for, or try when stuck. No theory.
    b. SELF-CHECK (3–4 items): One sentence each. Questions the student asks themselves before submitting. Actionable and specific to this skill.
+Close this section with: [Compliance: Study Tips — X tips, Y checklist items, student-facing language Y/N]
 
 Perform a silent internal audit before producing any output: confirm all problems are solvable as written, all solutions are mathematically correct, style matches TSI Math, and any shared data sets or source material appear once above the first problem in their group with a correct "For problems [X–Y]" header. Fix any issues before outputting. Do not include a visible audit section in the output.
 

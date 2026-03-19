@@ -43,6 +43,12 @@
       <div style="margin-top:6px;"><div style="font-size:11px;color:var(--gray-3);margin-bottom:4px;">Optional: add more context</div><input type="text" id="custom-level" placeholder="Optional: e.g. 'retaking the GED' or 'test in 3 weeks'"></div>
     </div>
 
+    <div class="field">
+      <div class="field-label">GED RLA Score <span class="badge">optional</span></div>
+      <div class="field-hint">Scale: 100–200. Passing: 145. College Ready: 165+. If blank, skill level and difficulty are used instead.</div>
+      <input type="text" id="score-input" placeholder="e.g. 148" style="max-width:120px;">
+    </div>
+
     <div class="field" id="field-skills">
       <div class="field-label">GED RLA Skills <span class="badge">required</span></div>
       <div class="field-hint">Core skills tested on the GED RLA. Select one or more.</div>
@@ -215,12 +221,15 @@
     if (!getFormats().length) { document.getElementById('field-format').classList.add('error'); ok = false; }
     if (!ok) return;
 
+    const scoreSection = buildScoreSection(getScore(), {
+      context: 'GED RLA score scale: 100–200. Below 145 = not yet passing. 145–164 = passing (High School Equivalency). 165–174 = College Ready. 175–200 = College Ready + Credit. Focus difficulty, skill depth, and passage complexity on what this score range predicts the student needs most.'
+    });
     showPrompt(buildBasePrompt({
       skillLine: skills.length === 1 ? `Focused skill: ${skills[0]}` : `Multiple skills: ${skills.join(', ')}`,
       level: getLevel(), formats: getFormats(), test: TEST_NAME,
       draft: document.getElementById('draft-text').value.trim(),
       struggling: document.getElementById('struggling-text').value.trim(),
-      category: '', sessionType: 'writing'
+      category: '', sessionType: 'writing', scoreSection
     }));
   }
 </script>
