@@ -158,9 +158,9 @@
     const struggling=document.getElementById('struggling-text').value.trim();
     const sample=document.getElementById('draft-text').value.trim();
     const difficultyLine={foundational:'All problems should be foundational and confidence-building.',mixed:'Progress from foundational problems to more challenging ones.',challenging:'Emphasize challenging problems typical of the harder end of the TSI Math section.'}[difficulty];
-    showPrompt(`Before generating anything, ask me 2–3 clarifying questions about anything not already covered in the details below that would help you produce a more targeted worksheet. Wait for my answers before generating.
+    showPrompt(`You are a math tutor assistant helping a student prepare for the ${TEST_NAME}. Generate a student-facing practice worksheet.
 
-You are a math tutor assistant helping a student prepare for the ${TEST_NAME}. Generate a student-facing practice worksheet. Do not solve problems for the student — provide problems for them to work through, with full solutions in the answer key only.
+Student-facing means: no answers, no answer key language, no meta-commentary about the worksheet appear in the WORKSHEET section. Keep each section cleanly separated.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 STUDENT CONTEXT
@@ -183,7 +183,8 @@ REQUIREMENTS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 • Calibrate all problems to the TSI Assessment Math section: use TSI-style stems, community college placement contexts, and difficulty consistent with the actual exam.
-• Multiple choice: 4 options (TSI style). One correct, three wrong — each reflecting a specific common mistake.
+• NON-NEGOTIABLE: Multiple choice: 4 options (TSI style). One correct, three wrong — each must represent a distinct error type. No two distractors may stem from the same mistake.
+• NON-NEGOTIABLE: Before finalizing each problem, verify the full solution top-to-bottom with the chosen values to confirm it produces a clean, unambiguous answer before writing the distractors.
 • Show your work: leave space for student work. Full step-by-step solutions in the answer key only.
 • Error identification: one mistake in a fully worked problem. Student finds and corrects it.
 • Fill in the blank: student completes a missing step or value.
@@ -196,11 +197,13 @@ OUTPUT STRUCTURE
 
 1. WORKSHEET — student-facing problems only. No answers visible.
 2. ANSWER KEY — complete step-by-step solution per problem. For MC, explain why each wrong answer is wrong.
-3. STUDY TIPS & SELF-CHECK — 3–5 student-facing strategy tips specific to the skill(s) above (e.g. "When setting up a proportion, make sure the same units are on the same side"), followed by a short checklist of 3–4 questions the student can ask themselves before submitting (e.g. "Does my answer make sense in the context of the problem?"). Write directly to the student using "you" language. Keep each tip to one or two sentences.
+3. STUDY TIPS & SELF-CHECK — fits on one printed page. Do not explain or teach the concept. Write directly to the student using "you" language.
+   a. TIPS (3–5 items): One sentence each. Practical strategies for this specific skill only — what to do, look for, or try when stuck. No theory.
+   b. SELF-CHECK (3–4 items): One sentence each. Questions the student asks themselves before submitting. Actionable and specific to this skill.
 
-Before producing any output, internally verify: all problems are solvable as written, all solutions are mathematically correct, and style matches TSI Math. Fix any issues before outputting. Do not include a self-check section in the output.
+Perform a silent internal audit before producing any output: confirm all problems are solvable as written, all solutions are mathematically correct, and style matches TSI Math. Fix any issues before outputting. Do not include a visible audit section in the output.
 
-After all three sections, produce a downloadable Word document (.docx) with clear headings for each section.`);
+After all three sections, format the complete output as a Word document (.docx) and offer it for download.`);
   }
 </script>
 </body>

@@ -214,9 +214,9 @@
     const formatLine = formats.length === 1 ? formats[0] : formats.slice(0,-1).join(', ') + ', and ' + formats[formats.length-1];
 
     const prompt =
-`Before generating anything, ask me 2–3 clarifying questions about anything not already covered in the details below that would help you produce a more targeted worksheet. Wait for my answers before generating.
+`You are a math tutor assistant. Generate a student-facing practice worksheet.
 
-You are a math tutor assistant. Generate a student-facing practice worksheet. Do not solve all problems for the student — provide problems for them to work through, with solutions in the answer key only.
+Student-facing means: no answers, no answer key language, no meta-commentary about the worksheet appear in the WORKSHEET section. Keep each section cleanly separated.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 STUDENT CONTEXT
@@ -239,7 +239,8 @@ REQUIREMENTS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 • Problems must require active thinking and solving — not just reading or copying.
-• Multiple choice: one clearly correct answer and three plausible wrong answers. Each wrong answer should reflect a specific common mistake (sign error, wrong formula, order of operations, etc.).
+• NON-NEGOTIABLE: Each wrong answer must represent a distinct error type — no two distractors may stem from the same mistake.
+• NON-NEGOTIABLE: Before finalizing each problem, verify the full solution top-to-bottom with the chosen values to confirm it produces a clean, unambiguous answer before writing the distractors.
 • Show your work problems: leave space for student work. Full step-by-step solutions in the answer key only.
 • Error identification: show a fully worked problem with exactly one mistake. Student finds and corrects it.
 • ${difficultyLine}
@@ -254,11 +255,13 @@ OUTPUT STRUCTURE
 
 2. ANSWER KEY — complete step-by-step solution for every problem. For multiple choice, name the correct answer and explain in one sentence why each wrong answer is wrong.
 
-3. STUDY TIPS & SELF-CHECK — 3–5 student-facing strategy tips specific to the skill above (e.g. "When solving a two-step equation, always undo addition or subtraction before multiplication or division"), followed by a short checklist of 3–4 questions the student can ask themselves before submitting (e.g. "Did I check my answer by substituting it back into the equation?"). Write directly to the student using "you" language. Keep each tip to one or two sentences.
+3. STUDY TIPS & SELF-CHECK — fits on one printed page. Do not explain or teach the concept. Write directly to the student using "you" language.
+   a. TIPS (3–5 items): One sentence each. Practical strategies for this specific skill only — what to do, look for, or try when stuck. No theory.
+   b. SELF-CHECK (3–4 items): One sentence each. Questions the student asks themselves before submitting. Actionable and specific to this skill.
 
-Before producing any output, internally verify: all problems are solvable as written, all answer key solutions are mathematically correct, and problems match the skill and format specified. Fix any issues before outputting. Do not include a self-check section in the output.
+Perform a silent internal audit before producing any output: confirm all problems are solvable as written, all solutions are mathematically correct, and problems match the skill and format specified. Fix any issues before outputting. Do not include a visible audit section in the output.
 
-After all three sections, produce a downloadable Word document (.docx) with clear headings for each section.`;
+After all three sections, format the complete output as a Word document (.docx) and offer it for download.`;
 
     showPrompt(prompt);
   }
