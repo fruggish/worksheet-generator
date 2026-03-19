@@ -15,4 +15,10 @@ The prompt that is generated has specific parameters and structure it must follo
 
 Before AI generates anything, it will ask a few questions to further clarify your request. This allows you to provide more specifics than the prompt tool would allow.
 
-The generated document will be ordered
+The generated document will be ordered as follows:
+
+Question sheet: literally the questions
+
+Answer key: the answers to those questions and explanations
+
+Study tips & self-check: tips related to the chosen skill(s) and questions the student can ask themselves
