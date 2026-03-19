@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>General Writing — Tutoring Center</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-brand"><div class="nav-icon">🎓</div><span class="nav-title">Tutoring Center</span></a>
+  <div class="nav-links">
+    <a href="writing.html" class="nav-link active">Writing</a>
+    <a href="math.html" class="nav-link">Math</a>
+  </div>
+  <div class="nav-sub">
+    <a href="writing-general.html" class="nav-sub-link active">General</a>
+    <a href="writing-ged.html" class="nav-sub-link">GED</a>
+    <a href="writing-sat.html" class="nav-sub-link">SAT</a>
+    <a href="writing-tsi.html" class="nav-sub-link">TSI</a>
+  </div>
+</nav>
+<div class="breadcrumb"><a href="index.html">Home</a> / <a href="writing.html">Writing</a> / General Writing</div>
+
+<div class="layout">
+  <div class="form-panel">
+    <div class="panel-title">✏️ General Writing</div>
+
+    <div class="field" id="field-level">
+      <div class="field-label">Student Skill Level <span class="badge">required</span></div>
+      <div class="field-hint">Pick the closest match, then add context below.</div>
+      <select id="select-level" onchange="clearErr('field-level')">
+        <option value="">— Select a skill level —</option>
+        <option value="Beginner — new to academic writing; needs foundational guidance">Beginner — new to academic writing</option>
+        <option value="Developing — understands basics but makes consistent, patterned errors">Developing — consistent, patterned errors</option>
+        <option value="Intermediate — solid structure; struggles with nuance and advanced choices">Intermediate — solid structure, struggles with nuance</option>
+        <option value="Advanced — strong writer who needs refinement and style-level challenge">Advanced — needs refinement</option>
+        <option value="Multilingual learner — grammar and sentence-level focus; avoid idiom-heavy explanations">Multilingual learner</option>
+        <option value="Anxious or avoidant — needs confidence-building; frame as low-stakes exploration">Anxious / avoidant — needs confidence-building</option>
+      </select>
+      <div class="val-msg" id="val-level">Please select a skill level.</div>
+      <div style="margin-top:6px;"><input type="text" id="custom-level" placeholder="Optional: e.g. 'preparing for GED' or 'first-gen freshman'"></div>
+    </div>
+
+    <div class="field" id="field-category">
+      <div class="field-label">Skill Category <span class="badge">required</span></div>
+      <div class="field-hint">Select a category to see available skills.</div>
+      <select id="select-category" onchange="onCategoryChange()">
+        <option value="">— Select a category —</option>
+        <option value="Reading Comprehension">Reading Comprehension</option>
+        <option value="Grammar Knowledge">Grammar Knowledge</option>
+        <option value="Composition Skills">Composition Skills</option>
+      </select>
+      <div class="val-msg" id="val-category">Please select a category.</div>
+    </div>
+
+    <div class="field" id="field-skills">
+      <div class="field-label">Skill(s) <span class="badge">required</span></div>
+      <div class="toggle-row" style="margin-bottom:7px;">
+        <button class="toggle-btn active" id="toggle-single" onclick="setMode('single')">Single</button>
+        <button class="toggle-btn" id="toggle-mixed" onclick="setMode('mixed')">Mixed</button>
+      </div>
+      <div class="field-hint" id="skill-hint">Select a category above to see skills.</div>
+      <div class="chips-wrap" id="chips"></div>
+      <div class="chip-note" id="chip-note"></div>
+      <div class="val-msg" id="val-skills">Please select at least one skill.</div>
+    </div>
+
+    <div class="field" id="field-format">
+      <div class="field-label">Question Format <span class="badge">required</span></div>
+      <div class="field-hint" id="format-hint">Select a skill above to see formats.</div>
+      <div class="format-grid" id="format-grid"></div>
+      <div class="val-msg" id="val-format">Please select at least one format.</div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Difficulty</div>
+      <div class="toggle-row">
+        <button class="toggle-btn" id="diff-foundational" onclick="setDifficulty('foundational')">Foundational</button>
+        <button class="toggle-btn active" id="diff-mixed" onclick="setDifficulty('mixed')">Mixed</button>
+        <button class="toggle-btn" id="diff-challenging" onclick="setDifficulty('challenging')">Challenging</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">What the Student is Struggling With <span class="badge">optional</span></div>
+      <textarea id="struggling-text" style="min-height:60px;" placeholder="e.g. Thesis previews topics instead of making a claim"></textarea>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Student's Draft Text <span class="badge">optional</span></div>
+      <textarea id="draft-text" style="min-height:60px;" placeholder="Paste what the student wrote"></textarea>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Number of Questions</div>
+      <div class="field-hint">Recommended: 8–12 for 60 min.</div>
+      <div class="stepper">
+        <button onclick="changeQty(-1)">−</button>
+        <div class="qty" id="qty-display">10</div>
+        <button onclick="changeQty(1)">+</button>
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="buildPrompt()">⚡ Build Prompt</button>
+  </div>
+
+  <div class="output-panel">
+    <div class="output-header">
+      <h2>📄 Your Prompt <button class="copy-btn" id="copy-btn" onclick="copyPrompt()" style="display:none;">📋 Copy Prompt</button></h2>
+    </div>
+    <div id="empty-state" class="empty-state">
+      <div class="es-icon">✏️</div>
+      <h3>Your prompt will appear here</h3>
+      <p>Fill in the fields and click Build Prompt.</p>
+      <div class="step-list">
+        <span>1. Fill in the fields</span>
+        <span>2. Click Build Prompt</span>
+        <span>3. Click inside the box → Ctrl+A → Ctrl+C</span>
+        <span>4. Paste into Claude or ChatGPT</span>
+      </div>
+    </div>
+    <textarea id="prompt-output" class="prompt-box" style="display:none;" readonly onclick="this.select()"></textarea>
+    <div id="copy-hint" class="copy-hint">✓ Text selected — press Ctrl+C to copy</div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+  let mode = 'single';
+
+  const categorySkillMap = {
+    'Reading Comprehension': [
+      {skill:'Central idea & main details',label:'Central idea & main details'},
+      {skill:'Inference & interpretation',label:'Inference & interpretation'},
+      {skill:"Author's purpose & point of view",label:"Author's purpose & POV"},
+      {skill:'Text structure & organization',label:'Text structure & organization'},
+      {skill:'Cross-text comparison',label:'Cross-text comparison'},
+      {skill:'Words in context',label:'Words in context'},
+      {skill:'Command of evidence — citing textual support',label:'Command of evidence'},
+      {skill:'Identifying supporting evidence',label:'Identifying supporting evidence'},
+      {skill:'Adding supporting evidence',label:'Adding supporting evidence'},
+      {skill:'Evaluating arguments & claims',label:'Evaluating arguments & claims'},
+      {skill:'Comparing arguments across texts',label:'Comparing arguments across texts'}
+    ],
+    'Grammar Knowledge': [
+      {skill:'Comma splices & punctuation',label:'Comma splices & punctuation'},
+      {skill:'Sentence boundaries & punctuation',label:'Sentence boundaries'},
+      {skill:'Grammar in context — within passages',label:'Grammar in context'},
+      {skill:'Sentence-level editing',label:'Sentence-level editing'},
+      {skill:'Transitions',label:'Transitions'},
+      {skill:'Words in context — grammar usage',label:'Words in context (grammar)'}
+    ],
+    'Composition Skills': [
+      {skill:'Thesis construction',label:'Thesis construction'},
+      {skill:'Thesis evaluation',label:'Thesis evaluation'},
+      {skill:'Thesis revision',label:'Thesis revision'},
+      {skill:'Topic sentences',label:'Topic sentences'},
+      {skill:'Argument & counterargument',label:'Argument & counterargument'},
+      {skill:'Source integration & citation',label:'Source integration & citation'},
+      {skill:'Rhetorical synthesis — combining sources',label:'Rhetorical synthesis'},
+      {skill:'Essay organization & development',label:'Essay organization'},
+      {skill:'Extended response & argumentative writing',label:'Extended response'},
+      {skill:'Sentence revision & editing',label:'Sentence revision & editing'}
+    ]
+  };
+
+  const formatMap = {
+    'Central idea & main details':[{fmt:'4-option multiple choice',name:'Multiple Choice',desc:'One best answer from a passage'},{fmt:'passage-based short response',name:'Short Response',desc:'Identify and explain in 1–2 sentences'},{fmt:'rank and evaluate',name:'Rank & Evaluate',desc:'Order details by relevance'}],
+    'Inference & interpretation':[{fmt:'4-option multiple choice',name:'Multiple Choice',desc:'What can be inferred?'},{fmt:'passage-based short response',name:'Short Response',desc:'Explain the inference with evidence'},{fmt:'error identification',name:'Error ID',desc:'Which inference is unsupported?'}],
+    "Author's purpose & point of view":[{fmt:'4-option multiple choice',name:'Multiple Choice',desc:"Why did the author write this?"},{fmt:'passage-based short response',name:'Short Response',desc:'Identify purpose and cite evidence'},{fmt:'evaluate a passage',name:'Evaluate a Passage',desc:'How does tone reveal POV?'}],
+    'Text structure & organization':[{fmt:'4-option multiple choice',name:'Multiple Choice',desc:'How is this passage organized?'},{fmt:'rank and evaluate',name:'Rank & Evaluate',desc:'Sequence paragraphs logically'},{fmt:'passage-based revision',name:'Passage Revision',desc:'Choose the best reorganization'}],
+    'Cross-text comparison':[{fmt:'4-option multiple choice',name:'Multiple Choice',desc:'How do these texts differ?'},{fmt:'passage-based short response',name:'Short Response',desc:'Compare with evidence from both'},{fmt:'evaluate a passage',name:'Evaluate a Passage',desc:'Whose argument is better supported?'}],
+    'Words in context':[{fmt:'words in context',name:'Words in Context',desc:'Choose the best word for the passage'},{fmt:'4-option multiple choice',name:'Multiple Choice',desc:'What does this word mean here?'},{fmt:'sentence revision',name:'Sentence Revision',desc:'Replace the underlined word'}],
+    'Command of evidence — citing textual support':[{fmt:'4-option multiple choice',name:'Multiple Choice',desc:'Which quote best supports the claim?'},{fmt:'passage-based revision',name:'Passage Revision',desc:'Choose the best evidence to add'},{fmt:'passage-based short response',name:'Short Response',desc:'Cite and explain evidence'}],
+    'Identifying supporting evidence':[{fmt:'4-option multiple choice',name:'Multiple Choice',desc:'Which sentence supports the claim?'},{fmt:'passage-based short response',name:'Short Response',desc:'Find and explain the evidence'},{fmt:'error identification',name:'Error ID',desc:'Which detail does NOT support the claim?'}],
+    'Adding supporting evidence':[{fmt:'passage-based revision',name:'Passage Revision',desc:'Choose the best evidence to add'},{fmt:'4-option multiple choice',name:'Multiple Choice',desc:'Which addition strengthens the argument?'},{fmt:'sentence revision',name:'Sentence Revision',desc:'Revise to include evidence'}],
+    'Evaluating arguments & claims':[{fmt:'4-option multiple choice',name:'Multiple Choice',desc:'Which weakens/strengthens the argument?'},{fmt:'evaluate a passage',name:'Evaluate a Passage',desc:'Is the reasoning valid?'},{fmt:'error identification',name:'Error ID',desc:'Find the logical flaw'}],
+    'Comparing arguments across texts':[{fmt:'4-option multiple choice',name:'Multiple Choice',desc:'Where do authors agree/disagree?'},{fmt:'evaluate a passage',name:'Evaluate a Passage',desc:'Whose argument is better supported?'},{fmt:'passage-based short response',name:'Short Response',desc:'Compare authors on a specific point'}],
+    'Comma splices & punctuation':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'sentence correction',name:'Sentence Correction',desc:'Rewrite correctly'},{fmt:'insert commas where needed',name:'Insert Commas',desc:'Mark punctuation'},{fmt:'error identification',name:'Error ID',desc:'Find and name the error'}],
+    'Sentence boundaries & punctuation':[{fmt:'4-option multiple choice',name:'Multiple Choice',desc:'Which correctly punctuates this?'},{fmt:'sentence correction',name:'Sentence Correction',desc:'Rewrite with correct boundaries'},{fmt:'error identification',name:'Error ID',desc:'Find the boundary error'},{fmt:'insert commas where needed',name:'Insert Commas',desc:'Mark correct punctuation'}],
+    'Grammar in context — within passages':[{fmt:'4-option multiple choice',name:'Multiple Choice',desc:'Which version is correct in context?'},{fmt:'passage-based revision',name:'Passage Revision',desc:'Choose the best correction'},{fmt:'error identification',name:'Error ID',desc:'Find the grammar error'}],
+    'Sentence-level editing':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'sentence correction',name:'Sentence Correction',desc:'Rewrite correctly'},{fmt:'error identification',name:'Error ID',desc:'Find and name the error'},{fmt:'insert commas where needed',name:'Insert Commas',desc:'Mark punctuation'}],
+    'Transitions':[{fmt:'4-option multiple choice',name:'Multiple Choice',desc:'Which transition best connects these ideas?'},{fmt:'sentence revision',name:'Sentence Revision',desc:'Choose the best transition'},{fmt:'error identification',name:'Error ID',desc:'Find the illogical transition'}],
+    'Words in context — grammar usage':[{fmt:'words in context',name:'Words in Context',desc:'Choose the grammatically correct word'},{fmt:'4-option multiple choice',name:'Multiple Choice',desc:'Which version uses the word correctly?'},{fmt:'sentence correction',name:'Sentence Correction',desc:'Correct the usage error'}],
+    'Thesis construction':[{fmt:'multiple choice',name:'Multiple Choice',desc:'Which thesis is arguable and specific?'},{fmt:'sentence rewrite',name:'Sentence Rewrite',desc:'Build a thesis from a topic and position'},{fmt:'rank and evaluate',name:'Rank & Evaluate',desc:'Order from weakest to strongest'}],
+    'Thesis evaluation':[{fmt:'multiple choice',name:'Multiple Choice',desc:'What is the weakness of this thesis?'},{fmt:'evaluate a passage',name:'Evaluate a Passage',desc:'Is this thesis arguable and supportable?'},{fmt:'rank and evaluate',name:'Rank & Evaluate',desc:'Order theses by strength'}],
+    'Thesis revision':[{fmt:'multiple choice',name:'Multiple Choice',desc:'Which is the strongest revision?'},{fmt:'sentence rewrite',name:'Sentence Rewrite',desc:'Revise to make it arguable'},{fmt:'rank and evaluate',name:'Rank & Evaluate',desc:'Order from weakest to strongest'}],
+    'Topic sentences':[{fmt:'multiple choice',name:'Multiple Choice',desc:'Which best introduces this paragraph?'},{fmt:'sentence rewrite',name:'Sentence Rewrite',desc:'Revise to preview the argument'},{fmt:'identify the problem',name:'Identify the Problem',desc:'Name what is weak and why'}],
+    'Argument & counterargument':[{fmt:'multiple choice',name:'Multiple Choice',desc:'Which best addresses the counterargument?'},{fmt:'evaluate a passage',name:'Evaluate a Passage',desc:'Does this acknowledge the counterargument?'},{fmt:'write a counterargument',name:'Write a Counterargument',desc:'One-sentence response to the claim'}],
+    'Source integration & citation':[{fmt:'multiple choice',name:'Multiple Choice',desc:'Which version integrates correctly?'},{fmt:'sentence rewrite',name:'Sentence Rewrite',desc:'Revise to integrate the source'},{fmt:'error identification',name:'Error ID',desc:'Find the citation error'}],
+    'Rhetorical synthesis — combining sources':[{fmt:'passage-based revision',name:'Passage Revision',desc:'Choose the best synthesis of two sources'},{fmt:'4-option multiple choice',name:'Multiple Choice',desc:'Which best combines these ideas?'},{fmt:'passage-based short response',name:'Short Response',desc:'Write a synthesis sentence'}],
+    'Essay organization & development':[{fmt:'4-option multiple choice',name:'Multiple Choice',desc:'Which best improves essay structure?'},{fmt:'rank and evaluate',name:'Rank & Evaluate',desc:'Order paragraphs for best organization'},{fmt:'passage-based revision',name:'Passage Revision',desc:'Choose the best addition or reorganization'}],
+    'Extended response & argumentative writing':[{fmt:'extended response prompt',name:'Extended Response',desc:'Timed argumentative essay prompt'},{fmt:'evaluate a passage',name:'Evaluate a Passage',desc:'Assess the strength of an argument'},{fmt:'passage-based short response',name:'Short Response',desc:'Draft a thesis and outline'}],
+    'Sentence revision & editing':[{fmt:'4-option multiple choice',name:'Multiple Choice',desc:'Which is the best revision?'},{fmt:'passage-based revision',name:'Passage Revision',desc:'Choose the best edit'},{fmt:'sentence correction',name:'Sentence Correction',desc:'Rewrite to improve clarity'}]
+  };
+
+  function onCategoryChange() {
+    const cat = document.getElementById('select-category').value;
+    clearErr('field-category');
+    document.getElementById('chips').innerHTML = '';
+    document.getElementById('format-grid').innerHTML = '';
+    document.getElementById('format-hint').textContent = 'Select a skill above to see formats.';
+    clearErr('field-skills'); clearErr('field-format');
+    if (!cat) { document.getElementById('skill-hint').textContent = 'Select a category above to see skills.'; return; }
+    document.getElementById('skill-hint').textContent = mode === 'single' ? 'Select one skill.' : 'Select all skills to cover.';
+    document.getElementById('chip-note').textContent = mode === 'single' ? 'Select one.' : 'Select all that apply.';
+    (categorySkillMap[cat] || []).forEach(s => {
+      const chip = document.createElement('div');
+      chip.className = 'chip'; chip.textContent = s.label; chip.dataset.skill = s.skill;
+      chip.onclick = () => toggleChip(chip);
+      document.getElementById('chips').appendChild(chip);
+    });
+  }
+
+  function setMode(m) {
+    mode = m;
+    document.getElementById('toggle-single').classList.toggle('active', m === 'single');
+    document.getElementById('toggle-mixed').classList.toggle('active', m === 'mixed');
+    const cat = document.getElementById('select-category').value;
+    if (cat) {
+      document.getElementById('skill-hint').textContent = m === 'single' ? 'Select one skill.' : 'Select all skills to cover.';
+      document.getElementById('chip-note').textContent = m === 'single' ? 'Select one.' : 'Select all that apply.';
+    }
+    if (m === 'single') {
+      const sel = document.querySelectorAll('#chips .chip.selected');
+      if (sel.length > 1) sel.forEach((c,i) => { if (i > 0) c.classList.remove('selected'); });
+      renderFormatCards(getSelectedFormats());
+    }
+  }
+
+  function toggleChip(el) {
+    if (mode === 'single') { document.querySelectorAll('#chips .chip').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); }
+    else { el.classList.toggle('selected'); }
+    clearErr('field-skills');
+    renderFormatCards(getSelectedFormats());
+  }
+
+  function getSkills() { return Array.from(document.querySelectorAll('#chips .chip.selected')).map(c => c.dataset.skill); }
+
+  function getSelectedFormats() {
+    const skills = getSkills();
+    const seen = new Set(); const fmts = [];
+    for (const s of skills) for (const f of (formatMap[s] || [])) { if (!seen.has(f.fmt)) { seen.add(f.fmt); fmts.push(f); } }
+    return fmts;
+  }
+
+  function buildPrompt() {
+    let ok = true;
+    if (!getLevel()) { document.getElementById('field-level').classList.add('error'); ok = false; }
+    if (!document.getElementById('select-category').value) { document.getElementById('field-category').classList.add('error'); ok = false; }
+    if (!getSkills().length) { document.getElementById('field-skills').classList.add('error'); ok = false; }
+    if (!getFormats().length) { document.getElementById('field-format').classList.add('error'); ok = false; }
+    if (!ok) return;
+
+    const skills = getSkills();
+    const skillLine = mode === 'mixed' ? `Mixed review covering: ${skills.join(', ')}` : `Focused skill: ${skills[0]}`;
+
+    showPrompt(buildBasePrompt({
+      skillLine, level: getLevel(), formats: getFormats(),
+      test: '', draft: document.getElementById('draft-text').value.trim(),
+      struggling: document.getElementById('struggling-text').value.trim(),
+      category: document.getElementById('select-category').value,
+      sessionType: 'writing'
+    }));
+  }
+</script>
+</body>
+</html>

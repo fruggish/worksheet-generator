@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading & Writing — Tutoring Center</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-brand"><div class="nav-icon">🎓</div><span class="nav-title">Tutoring Center</span></a>
+  <div class="nav-links">
+    <a href="writing.html" class="nav-link active">Writing</a>
+    <a href="math.html" class="nav-link">Math</a>
+  </div>
+  <div class="nav-sub">
+    <a href="writing-general.html" class="nav-sub-link">General</a>
+    <a href="writing-ged.html" class="nav-sub-link">GED</a>
+    <a href="writing-sat.html" class="nav-sub-link active">SAT</a>
+    <a href="writing-tsi.html" class="nav-sub-link">TSI</a>
+  </div>
+</nav>
+<div class="breadcrumb"><a href="index.html">Home</a> / <a href="writing.html">Writing</a> / SAT Reading & Writing</div>
+
+<div class="layout">
+  <div class="form-panel">
+    <div class="panel-title">📋 SAT — Reading & Writing</div>
+
+    <div class="field" id="field-level">
+      <div class="field-label">Student Skill Level <span class="badge">required</span></div>
+      <div class="field-hint">Pick the closest match, then add context below.</div>
+      <select id="select-level" onchange="clearErr('field-level')">
+        <option value="">— Select a skill level —</option>
+        <option value="Beginner — new to academic writing; needs foundational guidance">Beginner — new to academic writing</option>
+        <option value="Developing — understands basics but makes consistent, patterned errors">Developing — consistent, patterned errors</option>
+        <option value="Intermediate — solid structure; struggles with nuance and advanced choices">Intermediate — solid structure, struggles with nuance</option>
+        <option value="Advanced — strong writer who needs refinement and style-level challenge">Advanced — needs refinement</option>
+        <option value="Multilingual learner — grammar and sentence-level focus; avoid idiom-heavy explanations">Multilingual learner</option>
+        <option value="Anxious or avoidant — needs confidence-building; frame as low-stakes exploration">Anxious / avoidant — needs confidence-building</option>
+      </select>
+      <div class="val-msg" id="val-level">Please select a skill level.</div>
+      <div style="margin-top:6px;"><input type="text" id="custom-level" placeholder="Optional: e.g. 'aiming for 650+' or 'test in 2 weeks'"></div>
+    </div>
+
+    <div class="field" id="field-skills">
+      <div class="field-label">SAT R&W Skills <span class="badge">required</span></div>
+      <div class="field-hint">Core skills tested on SAT Reading & Writing. Select one or more.</div>
+      <div class="chips-wrap" id="chips">
+        <div class="chip" data-skill="Central idea & main details" onclick="toggleChip(this)">Central ideas & details</div>
+        <div class="chip" data-skill="Command of evidence — citing textual support" onclick="toggleChip(this)">Command of evidence</div>
+        <div class="chip" data-skill="Inference & interpretation" onclick="toggleChip(this)">Inferences</div>
+        <div class="chip" data-skill="Cross-text comparison" onclick="toggleChip(this)">Cross-text connections</div>
+        <div class="chip" data-skill="Words in context" onclick="toggleChip(this)">Words in context</div>
+        <div class="chip" data-skill="Text structure & organization" onclick="toggleChip(this)">Text structure & purpose</div>
+        <div class="chip" data-skill="Rhetorical synthesis — combining sources" onclick="toggleChip(this)">Rhetorical synthesis</div>
+        <div class="chip" data-skill="Transitions" onclick="toggleChip(this)">Transitions</div>
+        <div class="chip" data-skill="Sentence boundaries & punctuation" onclick="toggleChip(this)">Boundaries (punctuation)</div>
+        <div class="chip" data-skill="Grammar in context — within passages" onclick="toggleChip(this)">Form / structure / sense</div>
+      </div>
+      <div class="chip-note">Select one or more.</div>
+      <span class="other-skills-toggle" id="other-skills-btn" onclick="toggleOtherSkills()">▼ Other skills</span>
+      <div class="other-skills-section" id="other-skills-section">
+        <div class="other-skills-label">Additional skills not specific to SAT R&W</div>
+        <div class="chips-wrap" id="other-skills-chips"></div>
+      </div>
+      <div class="val-msg" id="val-skills">Please select at least one skill.</div>
+    </div>
+
+    <div class="field" id="field-format">
+      <div class="field-label">Question Format <span class="badge">required</span></div>
+      <div class="field-hint" id="format-hint">Select a skill above to see formats.</div>
+      <div class="format-grid" id="format-grid"></div>
+      <div class="val-msg" id="val-format">Please select at least one format.</div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Difficulty</div>
+      <div class="toggle-row">
+        <button class="toggle-btn" id="diff-foundational" onclick="setDifficulty('foundational')">Foundational</button>
+        <button class="toggle-btn active" id="diff-mixed" onclick="setDifficulty('mixed')">Mixed</button>
+        <button class="toggle-btn" id="diff-challenging" onclick="setDifficulty('challenging')">Challenging</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">What the Student is Struggling With <span class="badge">optional</span></div>
+      <textarea id="struggling-text" style="min-height:56px;" placeholder="e.g. Confuses the author's claim with supporting evidence"></textarea>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Student's Draft Text <span class="badge">optional</span></div>
+      <textarea id="draft-text" style="min-height:56px;" placeholder="Paste what the student wrote"></textarea>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Number of Questions</div>
+      <div class="stepper">
+        <button onclick="changeQty(-1)">−</button>
+        <div class="qty" id="qty-display">10</div>
+        <button onclick="changeQty(1)">+</button>
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="buildPrompt()">⚡ Build Prompt</button>
+  </div>
+
+  <div class="output-panel">
+    <div class="output-header">
+      <h2>📄 Your Prompt <button class="copy-btn" id="copy-btn" onclick="copyPrompt()" style="display:none;">📋 Copy Prompt</button></h2>
+    </div>
+    <div id="empty-state" class="empty-state">
+      <div class="es-icon">📋</div>
+      <h3>Your prompt will appear here</h3>
+      <p>Fill in the fields and click Build Prompt.</p>
+      <div class="step-list">
+        <span>1. Fill in the fields</span>
+        <span>2. Click Build Prompt</span>
+        <span>3. Click inside the box → Ctrl+A → Ctrl+C</span>
+        <span>4. Paste into Claude or ChatGPT</span>
+      </div>
+    </div>
+    <textarea id="prompt-output" class="prompt-box" style="display:none;" readonly onclick="this.select()"></textarea>
+    <div id="copy-hint" class="copy-hint">✓ Text selected — press Ctrl+C to copy</div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+  const TEST_NAME = 'SAT Reading & Writing';
+
+  const otherSkills = [
+    {skill:"Author's purpose & point of view",label:"Author's purpose & POV"},
+    {skill:'Identifying supporting evidence',label:'Identifying supporting evidence'},
+    {skill:'Adding supporting evidence',label:'Adding supporting evidence'},
+    {skill:'Evaluating arguments & claims',label:'Evaluating arguments & claims'},
+    {skill:'Comparing arguments across texts',label:'Comparing arguments across texts'},
+    {skill:'Comma splices & punctuation',label:'Comma splices & punctuation'},
+    {skill:'Sentence-level editing',label:'Sentence-level editing'},
+    {skill:'Thesis construction',label:'Thesis construction'},
+    {skill:'Thesis evaluation',label:'Thesis evaluation'},
+    {skill:'Thesis revision',label:'Thesis revision'},
+    {skill:'Topic sentences',label:'Topic sentences'},
+    {skill:'Argument & counterargument',label:'Argument & counterargument'},
+    {skill:'Source integration & citation',label:'Source integration & citation'},
+    {skill:'Essay organization & development',label:'Essay organization'},
+    {skill:'Extended response & argumentative writing',label:'Extended response'},
+    {skill:'Sentence revision & editing',label:'Sentence revision & editing'}
+  ];
+
+  const formatMap = {
+    'Central idea & main details':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'4 options, one best answer from passage'},{fmt:'evidence-based revision',name:'Evidence-Based Revision',desc:'Choose the best revision to support the claim'},{fmt:'passage-based short response',name:'Short Response',desc:'Identify and explain in 1–2 sentences'}],
+    'Command of evidence — citing textual support':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'Which quote best supports the claim?'},{fmt:'evidence-based revision',name:'Evidence-Based Revision',desc:'Choose the best evidence to add'}],
+    'Inference & interpretation':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'What can be most reasonably inferred?'},{fmt:'passage-based short response',name:'Short Response',desc:'Explain the inference with evidence'}],
+    'Cross-text comparison':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'How do these texts relate?'},{fmt:'passage-based short response',name:'Short Response',desc:'Compare passages on a specific point'}],
+    'Words in context':[{fmt:'words in context (SAT style)',name:'Words in Context',desc:'Which word/phrase best fits the passage?'},{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'What does this word mean as used here?'}],
+    'Text structure & organization':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'What is the main purpose of this paragraph?'},{fmt:'evidence-based revision',name:'Evidence-Based Revision',desc:'Choose the best structural revision'}],
+    'Rhetorical synthesis — combining sources':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'Which best uses the notes to accomplish the goal?'},{fmt:'evidence-based revision',name:'Evidence-Based Revision',desc:'Choose the best synthesis sentence'}],
+    'Transitions':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'Which transition best connects these sentences?'},{fmt:'evidence-based revision',name:'Evidence-Based Revision',desc:'Choose the best transition revision'}],
+    'Sentence boundaries & punctuation':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'Which correctly punctuates/combines these sentences?'},{fmt:'error identification',name:'Error ID',desc:'Find the boundary error'}],
+    'Grammar in context — within passages':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'Which version is grammatically correct in context?'},{fmt:'evidence-based revision',name:'Evidence-Based Revision',desc:'Choose the best correction'}],
+    "Author's purpose & point of view":[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:"Why did the author include this?"},{fmt:'passage-based short response',name:'Short Response',desc:'Identify purpose and cite evidence'}],
+    'Identifying supporting evidence':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'Which sentence best supports the claim?'},{fmt:'passage-based short response',name:'Short Response',desc:'Find and explain the evidence'}],
+    'Adding supporting evidence':[{fmt:'evidence-based revision',name:'Evidence-Based Revision',desc:'Choose the best evidence to add'},{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'Which addition strengthens the argument?'}],
+    'Evaluating arguments & claims':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'Which weakens/strengthens the argument?'},{fmt:'passage-based short response',name:'Short Response',desc:'Is the reasoning valid?'}],
+    'Comparing arguments across texts':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'Where do authors agree/disagree?'},{fmt:'passage-based short response',name:'Short Response',desc:'Compare authors on a specific point'}],
+    'Comma splices & punctuation':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'4 options, one correct'},{fmt:'error identification',name:'Error ID',desc:'Find and name the error'}],
+    'Sentence-level editing':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'Which version is correct?'},{fmt:'evidence-based revision',name:'Evidence-Based Revision',desc:'Choose the best edit'}],
+    'Thesis construction':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'Which thesis is arguable and specific?'},{fmt:'sentence rewrite',name:'Sentence Rewrite',desc:'Build a thesis from a topic'}],
+    'Thesis evaluation':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'What is the weakness of this thesis?'},{fmt:'evidence-based revision',name:'Evidence-Based Revision',desc:'Choose the best thesis revision'}],
+    'Thesis revision':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'Which is the strongest revision?'},{fmt:'sentence rewrite',name:'Sentence Rewrite',desc:'Revise to make it arguable'}],
+    'Topic sentences':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'Which best introduces this paragraph?'},{fmt:'evidence-based revision',name:'Evidence-Based Revision',desc:'Choose the best topic sentence revision'}],
+    'Argument & counterargument':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'Which best addresses the counterargument?'},{fmt:'passage-based short response',name:'Short Response',desc:'Draft a counterargument'}],
+    'Source integration & citation':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'Which version integrates correctly?'},{fmt:'evidence-based revision',name:'Evidence-Based Revision',desc:'Choose the best integration'}],
+    'Essay organization & development':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'Which best improves structure?'},{fmt:'evidence-based revision',name:'Evidence-Based Revision',desc:'Choose the best reorganization'}],
+    'Extended response & argumentative writing':[{fmt:'extended response prompt',name:'Extended Response',desc:'Argumentative essay prompt'},{fmt:'passage-based short response',name:'Short Response',desc:'Draft a thesis and outline'}],
+    'Sentence revision & editing':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'Which is the best revision?'},{fmt:'evidence-based revision',name:'Evidence-Based Revision',desc:'Choose the best edit'}]
+  };
+
+  buildOtherSkillsSection(otherSkills, toggleOtherChip);
+
+  function getAllSelectedSkills() {
+    return [
+      ...Array.from(document.querySelectorAll('#chips .chip.selected')),
+      ...Array.from(document.querySelectorAll('#other-skills-chips .chip.selected'))
+    ].map(c => c.dataset.skill);
+  }
+
+  function getSelectedFormatOptions() {
+    const skills = getAllSelectedSkills();
+    const seen = new Set(); const fmts = [];
+    for (const s of skills) for (const f of (formatMap[s] || [])) { if (!seen.has(f.fmt)) { seen.add(f.fmt); fmts.push(f); } }
+    return fmts;
+  }
+
+  function toggleChip(el) { el.classList.toggle('selected'); clearErr('field-skills'); renderFormatCards(getSelectedFormatOptions()); }
+  function toggleOtherChip(el) { el.classList.toggle('selected'); clearErr('field-skills'); renderFormatCards(getSelectedFormatOptions()); }
+
+  function buildPrompt() {
+    const skills = getAllSelectedSkills();
+    let ok = true;
+    if (!getLevel()) { document.getElementById('field-level').classList.add('error'); ok = false; }
+    if (!skills.length) { document.getElementById('field-skills').classList.add('error'); ok = false; }
+    if (!getFormats().length) { document.getElementById('field-format').classList.add('error'); ok = false; }
+    if (!ok) return;
+    showPrompt(buildBasePrompt({
+      skillLine: skills.length === 1 ? `Focused skill: ${skills[0]}` : `Multiple skills: ${skills.join(', ')}`,
+      level: getLevel(), formats: getFormats(), test: TEST_NAME,
+      draft: document.getElementById('draft-text').value.trim(),
+      struggling: document.getElementById('struggling-text').value.trim(),
+      category: '', sessionType: 'writing'
+    }));
+  }
+</script>
+</body>
+</html>

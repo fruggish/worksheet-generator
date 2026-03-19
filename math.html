@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math — Tutoring Center</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#1a2744;--blue:#2d5be3;--blue-light:#e8eefb;--blue-mid:#c2d0f5;--gold:#e8a022;--green:#1a8a5a;--green-light:#e8f7f0;--gray-1:#f5f6fa;--gray-2:#e8eaef;--gray-3:#9aa0b4;--gray-4:#5a6177;--text:#1a2744;--white:#ffffff;--radius:14px;--shadow:0 4px 24px rgba(26,39,68,0.10);}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--gray-1);color:var(--text);min-height:100vh;}
+  nav{background:var(--navy);padding:0 36px;display:flex;align-items:center;gap:0;border-bottom:3px solid var(--gold);height:64px;}
+  .nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
+  .nav-icon{width:36px;height:36px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .nav-title{font-family:'DM Serif Display',serif;font-size:17px;color:var(--white);}
+  .nav-links{display:flex;align-items:center;gap:4px;margin-left:32px;}
+  .nav-link{color:var(--blue-mid);font-size:13px;font-weight:500;padding:8px 14px;border-radius:8px;text-decoration:none;transition:all 0.18s;}
+  .nav-link:hover{background:rgba(255,255,255,0.08);color:var(--white);}
+  .nav-link.active{background:rgba(255,255,255,0.12);color:var(--white);}
+  .breadcrumb{padding:20px 36px 0;font-size:12.5px;color:var(--gray-3);}
+  .breadcrumb a{color:var(--gray-3);text-decoration:none;}
+  .breadcrumb a:hover{color:var(--blue);}
+  .hero{padding:36px 36px 32px;text-align:center;}
+  .hero h1{font-family:'DM Serif Display',serif;font-size:30px;color:var(--navy);margin-bottom:10px;}
+  .hero p{font-size:14.5px;color:var(--gray-4);max-width:500px;margin:0 auto;line-height:1.7;}
+  .section-label{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--gray-3);padding:0 36px;max-width:860px;margin:0 auto 12px;}
+  .card-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:860px;margin:0 auto;padding:0 36px 32px;}
+  .tool-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:32px 28px;text-decoration:none;color:var(--text);border:2px solid transparent;transition:all 0.22s;display:flex;flex-direction:column;gap:10px;}
+  .tool-card:hover{border-color:var(--green);transform:translateY(-3px);box-shadow:0 8px 32px rgba(26,138,90,0.13);}
+  .tool-card.test:hover{border-color:var(--blue);}
+  .card-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:4px;background:var(--green-light);}
+  .tool-card.test .card-icon{background:var(--blue-light);}
+  .tool-card h2{font-family:'DM Serif Display',serif;font-size:19px;color:var(--navy);}
+  .tool-card p{font-size:13px;color:var(--gray-4);line-height:1.6;}
+  .card-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
+  .tag{font-size:11px;font-weight:500;padding:2px 9px;border-radius:20px;background:var(--green-light);color:var(--green);}
+  .tool-card.test .tag{background:var(--blue-light);color:var(--blue);}
+  .arrow{margin-top:auto;padding-top:12px;font-size:12.5px;font-weight:600;color:var(--green);}
+  .tool-card.test .arrow{color:var(--blue);}
+  @media(max-width:700px){.card-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-brand">
+    <div class="nav-icon">🎓</div>
+    <span class="nav-title">Tutoring Center</span>
+  </a>
+  <div class="nav-links">
+    <a href="writing.html" class="nav-link">Writing</a>
+    <a href="math.html" class="nav-link active">Math</a>
+  </div>
+</nav>
+<div class="breadcrumb"><a href="index.html">Home</a> / Math</div>
+<div class="hero">
+  <h1>🔢 Math Tools</h1>
+  <p>Choose course-based practice or a specific standardized test. Each tool generates a ready-to-paste prompt for Claude or ChatGPT.</p>
+</div>
+
+<div class="section-label">Courses</div>
+<div class="card-grid">
+  <a href="math-courses.html" class="tool-card">
+    <div class="card-icon">📐</div>
+    <h2>Math Courses</h2>
+    <p>Practice problems for community college math courses from Arithmetic through Pre-Calculus.</p>
+    <div class="card-tags"><span class="tag">Arithmetic</span><span class="tag">Algebra</span><span class="tag">Pre-Calculus</span><span class="tag">Statistics</span><span class="tag">Trig</span></div>
+    <div class="arrow">Open →</div>
+  </a>
+</div>
+
+<div class="section-label">Standardized Tests</div>
+<div class="card-grid">
+  <a href="math-ged.html" class="tool-card test">
+    <div class="card-icon">📋</div>
+    <h2>GED — Mathematical Reasoning</h2>
+    <p>Skills and question formats specific to the GED Mathematical Reasoning test.</p>
+    <div class="card-tags"><span class="tag">Algebraic Thinking</span><span class="tag">Quantitative Reasoning</span></div>
+    <div class="arrow">Open →</div>
+  </a>
+  <a href="math-sat.html" class="tool-card test">
+    <div class="card-icon">📋</div>
+    <h2>SAT — Math</h2>
+    <p>Skills and question formats aligned to the SAT Math section.</p>
+    <div class="card-tags"><span class="tag">Algebra</span><span class="tag">Advanced Math</span><span class="tag">Problem Solving</span></div>
+    <div class="arrow">Open →</div>
+  </a>
+  <a href="math-tsi.html" class="tool-card test">
+    <div class="card-icon">📋</div>
+    <h2>TSI — Math</h2>
+    <p>Skills and question formats aligned to the TSI Assessment Math section.</p>
+    <div class="card-tags"><span class="tag">Quantitative Reasoning</span><span class="tag">Algebraic Reasoning</span></div>
+    <div class="arrow">Open →</div>
+  </a>
+</div>
+</body>
+</html>

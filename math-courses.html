@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Courses — Tutoring Center</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-brand"><div class="nav-icon">🎓</div><span class="nav-title">Tutoring Center</span></a>
+  <div class="nav-links">
+    <a href="writing.html" class="nav-link">Writing</a>
+    <a href="math.html" class="nav-link active">Math</a>
+  </div>
+  <div class="nav-sub">
+    <a href="math-courses.html" class="nav-sub-link active">Courses</a>
+    <a href="math-ged.html" class="nav-sub-link">GED</a>
+    <a href="math-sat.html" class="nav-sub-link">SAT</a>
+    <a href="math-tsi.html" class="nav-sub-link">TSI</a>
+  </div>
+</nav>
+<div class="breadcrumb"><a href="index.html">Home</a> / <a href="math.html">Math</a> / Courses</div>
+
+<div class="layout">
+  <div class="form-panel">
+    <div class="panel-title">📐 Math Courses</div>
+
+    <div class="field" id="field-level">
+      <div class="field-label">Student Skill Level <span class="badge">required</span></div>
+      <div class="field-hint">Pick the closest match, then add context below.</div>
+      <select id="select-level" onchange="clearErr('field-level')">
+        <option value="">— Select a skill level —</option>
+        <option value="Beginner — new to this topic; needs step-by-step foundational guidance">Beginner — new to this topic</option>
+        <option value="Developing — understands the concept but makes consistent procedural errors">Developing — consistent procedural errors</option>
+        <option value="Intermediate — can solve standard problems but struggles with multi-step or word problems">Intermediate — struggles with multi-step problems</option>
+        <option value="Advanced — solid understanding; needs challenge problems and edge cases">Advanced — needs challenge problems</option>
+        <option value="Multilingual learner — math vocabulary and word problem language needs extra scaffolding">Multilingual learner</option>
+        <option value="Math-anxious — needs confidence-building problems before harder material">Math-anxious — needs confidence-building</option>
+      </select>
+      <div class="val-msg" id="val-level">Please select a skill level.</div>
+      <div style="margin-top:6px;"><input type="text" id="custom-level" placeholder="Optional: e.g. 'preparing for placement test'"></div>
+    </div>
+
+    <div class="field" id="field-course">
+      <div class="field-label">Course <span class="badge">required</span></div>
+      <div class="field-hint">Select a course to see available skills.</div>
+      <select id="select-course" onchange="onCourseChange()">
+        <option value="">— Select a course —</option>
+        <option value="Arithmetic / Basic Math">Arithmetic / Basic Math</option>
+        <option value="Pre-Algebra">Pre-Algebra</option>
+        <option value="College Algebra">College Algebra</option>
+        <option value="Pre-Calculus">Pre-Calculus</option>
+        <option value="Statistics / Probability">Statistics / Probability</option>
+        <option value="Trigonometry">Trigonometry</option>
+      </select>
+      <div class="val-msg" id="val-course">Please select a course.</div>
+    </div>
+
+    <div class="field" id="field-skills">
+      <div class="field-label">Skill <span class="badge">required</span></div>
+      <div class="field-hint" id="skill-hint">Select a course above to see available skills.</div>
+      <div class="chips-wrap" id="chips"></div>
+      <div class="val-msg" id="val-skills">Please select a skill.</div>
+    </div>
+
+    <div class="field" id="field-format">
+      <div class="field-label">Question Format <span class="badge">required</span></div>
+      <div class="field-hint" id="format-hint">Select a skill above to see formats.</div>
+      <div class="format-grid" id="format-grid"></div>
+      <div class="val-msg" id="val-format">Please select at least one format.</div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Difficulty</div>
+      <div class="toggle-row">
+        <button class="toggle-btn" id="diff-foundational" onclick="setDifficulty('foundational')">Foundational</button>
+        <button class="toggle-btn active" id="diff-mixed" onclick="setDifficulty('mixed')">Mixed</button>
+        <button class="toggle-btn" id="diff-challenging" onclick="setDifficulty('challenging')">Challenging</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">What the Student is Struggling With <span class="badge">optional</span></div>
+      <textarea id="struggling-text" style="min-height:56px;" placeholder="e.g. Forgets to flip the inequality sign when dividing by a negative"></textarea>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Sample Problem / Student Work <span class="badge">optional</span></div>
+      <textarea id="draft-text" style="min-height:56px;" placeholder="e.g. Solve: 2x + 5 = 13. Student wrote: 2x = 18, x = 9"></textarea>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Number of Problems</div>
+      <div class="field-hint">Recommended: 8–12 for 60 min.</div>
+      <div class="stepper">
+        <button onclick="changeQty(-1)">−</button>
+        <div class="qty" id="qty-display">10</div>
+        <button onclick="changeQty(1)">+</button>
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="buildPrompt()">⚡ Build Prompt</button>
+  </div>
+
+  <div class="output-panel">
+    <div class="output-header">
+      <h2>📄 Your Prompt <button class="copy-btn" id="copy-btn" onclick="copyPrompt()" style="display:none;">📋 Copy Prompt</button></h2>
+    </div>
+    <div id="empty-state" class="empty-state">
+      <div class="es-icon">🔢</div>
+      <h3>Your prompt will appear here</h3>
+      <p>Fill in the fields and click Build Prompt.</p>
+      <div class="step-list">
+        <span>1. Fill in the fields</span>
+        <span>2. Click Build Prompt</span>
+        <span>3. Click inside the box → Ctrl+A → Ctrl+C</span>
+        <span>4. Paste into Claude or ChatGPT</span>
+      </div>
+    </div>
+    <textarea id="prompt-output" class="prompt-box" style="display:none;" readonly onclick="this.select()"></textarea>
+    <div id="copy-hint" class="copy-hint">✓ Text selected — press Ctrl+C to copy</div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+  const courseSkillMap = {
+    'Arithmetic / Basic Math':[{skill:'Fractions & decimals',label:'Fractions & decimals'},{skill:'Percentages',label:'Percentages'},{skill:'Order of operations',label:'Order of operations'},{skill:'Ratios & proportions',label:'Ratios & proportions'},{skill:'Integer operations',label:'Integer operations'}],
+    'Pre-Algebra':[{skill:'Variables & expressions',label:'Variables & expressions'},{skill:'Solving one- and two-step equations',label:'One/two-step equations'},{skill:'Inequalities',label:'Inequalities'},{skill:'Graphing on a number line',label:'Number line graphing'},{skill:'Word problems',label:'Word problems'}],
+    'College Algebra':[{skill:'Linear equations & systems',label:'Linear equations & systems'},{skill:'Quadratic equations',label:'Quadratic equations'},{skill:'Functions & function notation',label:'Functions & notation'},{skill:'Exponents & radicals',label:'Exponents & radicals'},{skill:'Polynomials',label:'Polynomials'},{skill:'Rational expressions',label:'Rational expressions'}],
+    'Pre-Calculus':[{skill:'Exponential & logarithmic functions',label:'Exponential & logs'},{skill:'Trigonometric functions',label:'Trig functions'},{skill:'Sequences & series',label:'Sequences & series'},{skill:'Conic sections',label:'Conic sections'},{skill:'Introduction to limits',label:'Intro to limits'}],
+    'Statistics / Probability':[{skill:'Mean, median, mode, and range',label:'Mean/median/mode/range'},{skill:'Probability basics',label:'Probability basics'},{skill:'Reading charts & graphs',label:'Charts & graphs'},{skill:'Normal distribution',label:'Normal distribution'},{skill:'Interpreting data',label:'Interpreting data'}],
+    'Trigonometry':[{skill:'Unit circle',label:'Unit circle'},{skill:'Trig ratios (SOH-CAH-TOA)',label:'SOH-CAH-TOA'},{skill:'Trig identities',label:'Trig identities'},{skill:'Solving trig equations',label:'Solving trig equations'},{skill:'Graphing trig functions',label:'Graphing trig functions'}]
+  };
+
+  const formatMap = {
+    'Fractions & decimals':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Step-by-step solve'},{fmt:'error identification',name:'Error ID',desc:'Find the mistake in worked solution'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing step'}],
+    'Percentages':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Step-by-step solve'},{fmt:'error identification',name:'Error ID',desc:'Find the mistake'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing step'}],
+    'Order of operations':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Step-by-step solve'},{fmt:'error identification',name:'Error ID',desc:'Find where order was applied wrong'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing step'}],
+    'Ratios & proportions':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Step-by-step solve'},{fmt:'error identification',name:'Error ID',desc:'Find the mistake'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing step'}],
+    'Integer operations':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Step-by-step solve'},{fmt:'error identification',name:'Error ID',desc:'Find the sign error'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing step'}],
+    'Variables & expressions':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Simplify or evaluate'},{fmt:'error identification',name:'Error ID',desc:'Find the mistake'},{fmt:'match equation to word problem',name:'Match to Word Problem',desc:'Link expression to context'}],
+    'Solving one- and two-step equations':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Solve step by step'},{fmt:'error identification',name:'Error ID',desc:'Find where the solve went wrong'},{fmt:'match equation to word problem',name:'Match to Word Problem',desc:'Link equation to context'}],
+    'Inequalities':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Solve and describe solution set'},{fmt:'error identification',name:'Error ID',desc:'Find the sign flip error'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing step'}],
+    'Graphing on a number line':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'error identification',name:'Error ID',desc:'Find the graphing error'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Describe the solution set'}],
+    'Word problems':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Set up and solve'},{fmt:'match equation to word problem',name:'Match to Word Problem',desc:'Link equation to context'},{fmt:'error identification',name:'Error ID',desc:'Find where the setup went wrong'}],
+    'Linear equations & systems':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Solve step by step'},{fmt:'error identification',name:'Error ID',desc:'Find the mistake'},{fmt:'graph interpretation',name:'Graph Interpretation',desc:'Read and interpret a graph'}],
+    'Quadratic equations':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Solve step by step'},{fmt:'error identification',name:'Error ID',desc:'Find the mistake'},{fmt:'match function to graph',name:'Match to Graph',desc:'Link equation to its parabola'}],
+    'Functions & function notation':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Evaluate or compose'},{fmt:'error identification',name:'Error ID',desc:'Find the notation error'},{fmt:'match function to graph',name:'Match to Graph',desc:'Link function to its graph'}],
+    'Exponents & radicals':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Simplify step by step'},{fmt:'error identification',name:'Error ID',desc:'Find the rule misapplication'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing step'}],
+    'Polynomials':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Add, subtract, multiply, or factor'},{fmt:'error identification',name:'Error ID',desc:'Find the distribution or sign error'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing step'}],
+    'Rational expressions':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Simplify or operate step by step'},{fmt:'error identification',name:'Error ID',desc:'Find the cancellation or LCD error'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing step'}],
+    'Exponential & logarithmic functions':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Solve or simplify step by step'},{fmt:'error identification',name:'Error ID',desc:'Find the log property error'},{fmt:'graph interpretation',name:'Graph Interpretation',desc:'Read and interpret the graph'}],
+    'Trigonometric functions':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Evaluate or solve'},{fmt:'error identification',name:'Error ID',desc:'Find the trig error'},{fmt:'graph interpretation',name:'Graph Interpretation',desc:'Read and interpret the trig graph'}],
+    'Sequences & series':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Find the term or sum'},{fmt:'error identification',name:'Error ID',desc:'Find the formula error'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing term'}],
+    'Conic sections':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Identify and write the equation'},{fmt:'match function to graph',name:'Match to Graph',desc:'Link equation to its conic'},{fmt:'error identification',name:'Error ID',desc:'Find the equation error'}],
+    'Introduction to limits':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Evaluate the limit step by step'},{fmt:'graph interpretation',name:'Graph Interpretation',desc:'Read the limit from a graph'},{fmt:'error identification',name:'Error ID',desc:'Find the limit evaluation error'}],
+    'Mean, median, mode, and range':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Calculate step by step'},{fmt:'error identification',name:'Error ID',desc:'Find the calculation error'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing value'}],
+    'Probability basics':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Set up and solve'},{fmt:'error identification',name:'Error ID',desc:'Find the probability error'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing probability'}],
+    'Reading charts & graphs':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'interpret a graph',name:'Interpret a Graph',desc:'Answer questions about a given graph'},{fmt:'error identification',name:'Error ID',desc:'Find the misreading error'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the data value'}],
+    'Normal distribution':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Calculate z-scores or probabilities'},{fmt:'interpret a graph',name:'Interpret a Graph',desc:'Read the distribution curve'},{fmt:'error identification',name:'Error ID',desc:'Find the z-score error'}],
+    'Interpreting data':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'interpret a graph',name:'Interpret a Graph',desc:'Draw conclusions from data'},{fmt:'error identification',name:'Error ID',desc:'Find the misinterpretation'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the conclusion'}],
+    'Unit circle':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete coordinates or values'},{fmt:'error identification',name:'Error ID',desc:'Find the unit circle error'},{fmt:'show your work',name:'Show Your Work',desc:'Derive the value step by step'}],
+    'Trig ratios (SOH-CAH-TOA)':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Set up and solve the ratio'},{fmt:'error identification',name:'Error ID',desc:'Find the ratio setup error'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing ratio'}],
+    'Trig identities':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Verify or simplify'},{fmt:'error identification',name:'Error ID',desc:'Find the identity misapplication'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the identity step'}],
+    'Solving trig equations':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Solve step by step'},{fmt:'error identification',name:'Error ID',desc:'Find the solution set error'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing solution'}],
+    'Graphing trig functions':[{fmt:'multiple choice',name:'Multiple Choice',desc:'4 options, one correct'},{fmt:'graph interpretation',name:'Graph Interpretation',desc:'Read amplitude, period, or phase shift'},{fmt:'match function to graph',name:'Match to Graph',desc:'Link equation to its trig graph'},{fmt:'error identification',name:'Error ID',desc:'Find the graphing error'}]
+  };
+
+  function onCourseChange() {
+    const course = document.getElementById('select-course').value;
+    clearErr('field-course');
+    document.getElementById('chips').innerHTML = '';
+    document.getElementById('format-grid').innerHTML = '';
+    document.getElementById('format-hint').textContent = 'Select a skill above to see formats.';
+    clearErr('field-skills'); clearErr('field-format');
+    if (!course) { document.getElementById('skill-hint').textContent = 'Select a course above to see skills.'; return; }
+    document.getElementById('skill-hint').textContent = 'Select one skill for this worksheet.';
+    (courseSkillMap[course] || []).forEach(s => {
+      const chip = document.createElement('div');
+      chip.className = 'chip'; chip.textContent = s.label; chip.dataset.skill = s.skill;
+      chip.onclick = () => {
+        document.querySelectorAll('#chips .chip').forEach(c => c.classList.remove('selected'));
+        chip.classList.add('selected');
+        clearErr('field-skills');
+        renderFormatCards(formatMap[s.skill] || []);
+      };
+      document.getElementById('chips').appendChild(chip);
+    });
+  }
+
+  function buildPrompt() {
+    const skill = document.querySelector('#chips .chip.selected');
+    const course = document.getElementById('select-course').value;
+    let ok = true;
+    if (!getLevel()) { document.getElementById('field-level').classList.add('error'); ok = false; }
+    if (!course) { document.getElementById('field-course').classList.add('error'); ok = false; }
+    if (!skill) { document.getElementById('field-skills').classList.add('error'); ok = false; }
+    if (!getFormats().length) { document.getElementById('field-format').classList.add('error'); ok = false; }
+    if (!ok) return;
+
+    const difficultyLine = {
+      foundational: 'All problems should be foundational and confidence-building. Avoid tricky edge cases.',
+      mixed: 'Progress from foundational problems to more challenging ones.',
+      challenging: 'Emphasize challenging problems and edge cases where common mistakes are highly tempting.'
+    }[difficulty];
+
+    const struggling = document.getElementById('struggling-text').value.trim();
+    const sample = document.getElementById('draft-text').value.trim();
+    const formats = getFormats();
+    const formatLine = formats.length === 1 ? formats[0] : formats.slice(0,-1).join(', ') + ', and ' + formats[formats.length-1];
+
+    const prompt =
+`Before generating anything, ask me 2–3 clarifying questions about the student, their specific errors, or their upcoming assessment. Wait for my answers before generating.
+
+You are a math tutor assistant. Generate a student-facing practice worksheet. Do not solve all problems for the student — provide problems for them to work through, with solutions in the answer key only.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STUDENT CONTEXT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STUDENT SKILL LEVEL: ${getLevel()}
+SESSION LENGTH: 60 minutes
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+WORKSHEET DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+COURSE: ${course}
+SKILL: ${skill.dataset.skill}
+FORMAT: ${formatLine}
+NUMBER OF PROBLEMS: ${qty}
+${struggling ? `\nSPECIFIC STRUGGLES:\n${struggling}\nPrioritize problems that directly address these patterns.\n` : ''}${sample ? `\nSAMPLE PROBLEM / STUDENT WORK:\n${sample}\nBuild at least 3 problems around this example or error pattern.\n` : ''}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+REQUIREMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+• Problems must require active thinking and solving — not just reading or copying.
+• Multiple choice: one clearly correct answer and three plausible wrong answers. Each wrong answer should reflect a specific common mistake (sign error, wrong formula, order of operations, etc.).
+• Show your work problems: leave space for student work. Full step-by-step solutions in the answer key only.
+• Error identification: show a fully worked problem with exactly one mistake. Student finds and corrects it.
+• ${difficultyLine}
+• Use realistic, concrete numbers. Avoid artificially complex values unless the skill requires it.
+• Word problems should use clear, direct language.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OUTPUT STRUCTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. WORKSHEET — student-facing problems only. No answers or solutions visible.
+
+2. ANSWER KEY — complete step-by-step solution for every problem. For multiple choice, name the correct answer and explain in one sentence why each wrong answer is wrong.
+
+3. TUTOR TALK MOVES — 3–5 questions the tutor asks out loud to prompt student thinking rather than giving away answers (e.g., "What do you notice about the sign here?" or "Which operation should come first — and why?"). Tie each to a specific problem number.
+
+4. SELF-CHECK — confirm: (a) all problems are solvable as written, (b) all answer key solutions are mathematically correct, (c) problems match the skill and format specified. Flag anything uncertain.
+
+After all four sections, produce a downloadable Word document (.docx) with clear headings for each section.`;
+
+    showPrompt(prompt);
+  }
+</script>
+</body>
+</html>

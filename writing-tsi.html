@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TSI Reading & Writing — Tutoring Center</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-brand"><div class="nav-icon">🎓</div><span class="nav-title">Tutoring Center</span></a>
+  <div class="nav-links">
+    <a href="writing.html" class="nav-link active">Writing</a>
+    <a href="math.html" class="nav-link">Math</a>
+  </div>
+  <div class="nav-sub">
+    <a href="writing-general.html" class="nav-sub-link">General</a>
+    <a href="writing-ged.html" class="nav-sub-link">GED</a>
+    <a href="writing-sat.html" class="nav-sub-link">SAT</a>
+    <a href="writing-tsi.html" class="nav-sub-link active">TSI</a>
+  </div>
+</nav>
+<div class="breadcrumb"><a href="index.html">Home</a> / <a href="writing.html">Writing</a> / TSI Reading & Writing</div>
+
+<div class="layout">
+  <div class="form-panel">
+    <div class="panel-title">📋 TSI — Reading & Writing</div>
+
+    <div class="field" id="field-level">
+      <div class="field-label">Student Skill Level <span class="badge">required</span></div>
+      <div class="field-hint">Pick the closest match, then add context below.</div>
+      <select id="select-level" onchange="clearErr('field-level')">
+        <option value="">— Select a skill level —</option>
+        <option value="Beginner — new to academic writing; needs foundational guidance">Beginner — new to academic writing</option>
+        <option value="Developing — understands basics but makes consistent, patterned errors">Developing — consistent, patterned errors</option>
+        <option value="Intermediate — solid structure; struggles with nuance and advanced choices">Intermediate — solid structure, struggles with nuance</option>
+        <option value="Advanced — strong writer who needs refinement and style-level challenge">Advanced — needs refinement</option>
+        <option value="Multilingual learner — grammar and sentence-level focus; avoid idiom-heavy explanations">Multilingual learner</option>
+        <option value="Anxious or avoidant — needs confidence-building; frame as low-stakes exploration">Anxious / avoidant — needs confidence-building</option>
+      </select>
+      <div class="val-msg" id="val-level">Please select a skill level.</div>
+      <div style="margin-top:6px;"><input type="text" id="custom-level" placeholder="Optional: e.g. 'needs to pass TSI to enroll' or 'retesting'"></div>
+    </div>
+
+    <div class="field" id="field-skills">
+      <div class="field-label">TSI Skills <span class="badge">required</span></div>
+      <div class="field-hint">Core skills tested on the TSI Assessment. Select one or more.</div>
+      <div class="chips-wrap" id="chips">
+        <div class="chip" data-skill="Central idea & main details" onclick="toggleChip(this)">Literary analysis — main idea</div>
+        <div class="chip" data-skill="Inference & interpretation" onclick="toggleChip(this)">Inference & interpretation</div>
+        <div class="chip" data-skill="Author's purpose & point of view" onclick="toggleChip(this)">Author's purpose</div>
+        <div class="chip" data-skill="Text structure & organization" onclick="toggleChip(this)">Passage organization & structure</div>
+        <div class="chip" data-skill="Sentence revision & editing" onclick="toggleChip(this)">Essay revision & editing</div>
+        <div class="chip" data-skill="Sentence boundaries & punctuation" onclick="toggleChip(this)">Sentence structure & mechanics</div>
+        <div class="chip" data-skill="Extended response & argumentative writing" onclick="toggleChip(this)">Extended writing response</div>
+        <div class="chip" data-skill="Grammar in context — within passages" onclick="toggleChip(this)">Grammar in context</div>
+      </div>
+      <div class="chip-note">Select one or more.</div>
+      <span class="other-skills-toggle" id="other-skills-btn" onclick="toggleOtherSkills()">▼ Other skills</span>
+      <div class="other-skills-section" id="other-skills-section">
+        <div class="other-skills-label">Additional skills not specific to TSI</div>
+        <div class="chips-wrap" id="other-skills-chips"></div>
+      </div>
+      <div class="val-msg" id="val-skills">Please select at least one skill.</div>
+    </div>
+
+    <div class="field" id="field-format">
+      <div class="field-label">Question Format <span class="badge">required</span></div>
+      <div class="field-hint" id="format-hint">Select a skill above to see formats.</div>
+      <div class="format-grid" id="format-grid"></div>
+      <div class="val-msg" id="val-format">Please select at least one format.</div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Difficulty</div>
+      <div class="toggle-row">
+        <button class="toggle-btn" id="diff-foundational" onclick="setDifficulty('foundational')">Foundational</button>
+        <button class="toggle-btn active" id="diff-mixed" onclick="setDifficulty('mixed')">Mixed</button>
+        <button class="toggle-btn" id="diff-challenging" onclick="setDifficulty('challenging')">Challenging</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">What the Student is Struggling With <span class="badge">optional</span></div>
+      <textarea id="struggling-text" style="min-height:56px;" placeholder="e.g. Cannot distinguish theme from main idea in literary passages"></textarea>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Student's Draft Text <span class="badge">optional</span></div>
+      <textarea id="draft-text" style="min-height:56px;" placeholder="Paste what the student wrote"></textarea>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Number of Questions</div>
+      <div class="stepper">
+        <button onclick="changeQty(-1)">−</button>
+        <div class="qty" id="qty-display">10</div>
+        <button onclick="changeQty(1)">+</button>
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="buildPrompt()">⚡ Build Prompt</button>
+  </div>
+
+  <div class="output-panel">
+    <div class="output-header">
+      <h2>📄 Your Prompt <button class="copy-btn" id="copy-btn" onclick="copyPrompt()" style="display:none;">📋 Copy Prompt</button></h2>
+    </div>
+    <div id="empty-state" class="empty-state">
+      <div class="es-icon">📋</div>
+      <h3>Your prompt will appear here</h3>
+      <p>Fill in the fields and click Build Prompt.</p>
+      <div class="step-list">
+        <span>1. Fill in the fields</span>
+        <span>2. Click Build Prompt</span>
+        <span>3. Click inside the box → Ctrl+A → Ctrl+C</span>
+        <span>4. Paste into Claude or ChatGPT</span>
+      </div>
+    </div>
+    <textarea id="prompt-output" class="prompt-box" style="display:none;" readonly onclick="this.select()"></textarea>
+    <div id="copy-hint" class="copy-hint">✓ Text selected — press Ctrl+C to copy</div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+  const TEST_NAME = 'TSI Assessment Reading & Writing';
+
+  const otherSkills = [
+    {skill:'Cross-text comparison',label:'Cross-text comparison'},
+    {skill:'Words in context',label:'Words in context'},
+    {skill:'Command of evidence — citing textual support',label:'Command of evidence'},
+    {skill:'Identifying supporting evidence',label:'Identifying supporting evidence'},
+    {skill:'Adding supporting evidence',label:'Adding supporting evidence'},
+    {skill:'Evaluating arguments & claims',label:'Evaluating arguments & claims'},
+    {skill:'Comparing arguments across texts',label:'Comparing arguments across texts'},
+    {skill:'Comma splices & punctuation',label:'Comma splices & punctuation'},
+    {skill:'Transitions',label:'Transitions'},
+    {skill:'Sentence-level editing',label:'Sentence-level editing'},
+    {skill:'Thesis construction',label:'Thesis construction'},
+    {skill:'Thesis evaluation',label:'Thesis evaluation'},
+    {skill:'Thesis revision',label:'Thesis revision'},
+    {skill:'Topic sentences',label:'Topic sentences'},
+    {skill:'Argument & counterargument',label:'Argument & counterargument'},
+    {skill:'Source integration & citation',label:'Source integration & citation'},
+    {skill:'Rhetorical synthesis — combining sources',label:'Rhetorical synthesis'},
+    {skill:'Essay organization & development',label:'Essay organization'}
+  ];
+
+  const formatMap = {
+    'Central idea & main details':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'4 options, one best answer'},{fmt:'passage-based short response',name:'Short Response',desc:'Identify and explain in 1–2 sentences'}],
+    'Inference & interpretation':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'What can be inferred?'},{fmt:'passage-based short response',name:'Short Response',desc:'Explain the inference with evidence'}],
+    "Author's purpose & point of view":[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:"Why did the author write this?"},{fmt:'passage-based short response',name:'Short Response',desc:'Identify purpose and cite evidence'}],
+    'Text structure & organization':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'How is this passage organized?'},{fmt:'rank and evaluate',name:'Rank / Order',desc:'Sequence paragraphs logically'}],
+    'Sentence revision & editing':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'Which is the best revision?'},{fmt:'passage-based editing',name:'Passage-Based Editing',desc:'Choose the best edit in context'},{fmt:'sentence correction',name:'Sentence Correction',desc:'Rewrite to improve clarity'}],
+    'Sentence boundaries & punctuation':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'Which correctly punctuates this?'},{fmt:'sentence correction',name:'Sentence Correction',desc:'Rewrite with correct structure'},{fmt:'error identification',name:'Error ID',desc:'Find the sentence structure error'}],
+    'Extended response & argumentative writing':[{fmt:'extended writing prompt (TSI style — 5-paragraph response)',name:'Extended Writing',desc:'Full TSI-style argumentative essay prompt'},{fmt:'passage-based short response',name:'Short Response',desc:'Draft a thesis and outline'}],
+    'Grammar in context — within passages':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'Which version is grammatically correct?'},{fmt:'passage-based editing',name:'Passage-Based Editing',desc:'Choose the best correction in context'}],
+    'Cross-text comparison':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'How do these texts differ?'},{fmt:'passage-based short response',name:'Short Response',desc:'Compare with evidence from both'}],
+    'Words in context':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'What does this word mean here?'},{fmt:'sentence revision',name:'Sentence Revision',desc:'Replace the underlined word'}],
+    'Command of evidence — citing textual support':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'Which quote best supports the claim?'},{fmt:'passage-based short response',name:'Short Response',desc:'Cite and explain evidence'}],
+    'Identifying supporting evidence':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'Which sentence supports the claim?'},{fmt:'passage-based short response',name:'Short Response',desc:'Find and explain the evidence'}],
+    'Adding supporting evidence':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'Which addition strengthens the argument?'},{fmt:'passage-based editing',name:'Passage-Based Editing',desc:'Choose the best evidence to add'}],
+    'Evaluating arguments & claims':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'Which weakens/strengthens the argument?'},{fmt:'passage-based short response',name:'Short Response',desc:'Is the reasoning valid?'}],
+    'Comparing arguments across texts':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'Where do authors agree/disagree?'},{fmt:'passage-based short response',name:'Short Response',desc:'Compare authors on a specific point'}],
+    'Comma splices & punctuation':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'4 options, one correct'},{fmt:'sentence correction',name:'Sentence Correction',desc:'Rewrite correctly'}],
+    'Transitions':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'Which transition best connects these?'},{fmt:'error identification',name:'Error ID',desc:'Find the illogical transition'}],
+    'Sentence-level editing':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'Which version is correct?'},{fmt:'passage-based editing',name:'Passage-Based Editing',desc:'Choose the best edit'}],
+    'Thesis construction':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'Which thesis is arguable?'},{fmt:'sentence rewrite',name:'Sentence Rewrite',desc:'Build a thesis from a topic'}],
+    'Thesis evaluation':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'What is the weakness of this thesis?'},{fmt:'evaluate a passage',name:'Evaluate a Passage',desc:'Is this thesis arguable?'}],
+    'Thesis revision':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'Which is the strongest revision?'},{fmt:'sentence rewrite',name:'Sentence Rewrite',desc:'Revise to make it arguable'}],
+    'Topic sentences':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'Which best introduces this paragraph?'},{fmt:'sentence rewrite',name:'Sentence Rewrite',desc:'Revise to preview the argument'}],
+    'Argument & counterargument':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'Which best addresses the counterargument?'},{fmt:'passage-based short response',name:'Short Response',desc:'Draft a counterargument'}],
+    'Source integration & citation':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'Which version integrates correctly?'},{fmt:'error identification',name:'Error ID',desc:'Find the citation error'}],
+    'Rhetorical synthesis — combining sources':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'Which best combines these ideas?'},{fmt:'passage-based short response',name:'Short Response',desc:'Write a synthesis sentence'}],
+    'Essay organization & development':[{fmt:'4-option multiple choice (TSI style)',name:'MC — TSI Style',desc:'Which best improves structure?'},{fmt:'rank and evaluate',name:'Rank / Order',desc:'Order paragraphs for best organization'}]
+  };
+
+  buildOtherSkillsSection(otherSkills, toggleOtherChip);
+
+  function getAllSelectedSkills() {
+    return [
+      ...Array.from(document.querySelectorAll('#chips .chip.selected')),
+      ...Array.from(document.querySelectorAll('#other-skills-chips .chip.selected'))
+    ].map(c => c.dataset.skill);
+  }
+
+  function getSelectedFormatOptions() {
+    const skills = getAllSelectedSkills();
+    const seen = new Set(); const fmts = [];
+    for (const s of skills) for (const f of (formatMap[s] || [])) { if (!seen.has(f.fmt)) { seen.add(f.fmt); fmts.push(f); } }
+    return fmts;
+  }
+
+  function toggleChip(el) { el.classList.toggle('selected'); clearErr('field-skills'); renderFormatCards(getSelectedFormatOptions()); }
+  function toggleOtherChip(el) { el.classList.toggle('selected'); clearErr('field-skills'); renderFormatCards(getSelectedFormatOptions()); }
+
+  function buildPrompt() {
+    const skills = getAllSelectedSkills();
+    let ok = true;
+    if (!getLevel()) { document.getElementById('field-level').classList.add('error'); ok = false; }
+    if (!skills.length) { document.getElementById('field-skills').classList.add('error'); ok = false; }
+    if (!getFormats().length) { document.getElementById('field-format').classList.add('error'); ok = false; }
+    if (!ok) return;
+    showPrompt(buildBasePrompt({
+      skillLine: skills.length === 1 ? `Focused skill: ${skills[0]}` : `Multiple skills: ${skills.join(', ')}`,
+      level: getLevel(), formats: getFormats(), test: TEST_NAME,
+      draft: document.getElementById('draft-text').value.trim(),
+      struggling: document.getElementById('struggling-text').value.trim(),
+      category: '', sessionType: 'writing'
+    }));
+  }
+</script>
+</body>
+</html>
