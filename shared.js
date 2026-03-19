@@ -185,7 +185,7 @@ OUTPUT STRUCTURE
 
 3. TUTOR TALK MOVES — 3–5 spoken questions tied to specific question numbers to prompt student thinking.
 
-4. SELF-CHECK — confirm: no invented facts, no ghostwriting, all questions match the skill(s) listed. Flag anything uncertain.
+Before producing any output, internally verify: no invented facts or sources, no ghostwriting, all questions match the skill(s) listed. If anything fails this check, fix it before outputting. Do not include the self-check as a section in the output.
 
-After all four sections, produce a downloadable Word document (.docx) with clear headings for each section.`;
+After all three sections, produce a downloadable Word document (.docx) with clear headings for each section.`;
 }
