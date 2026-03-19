@@ -40,7 +40,7 @@
         <option value="Math-anxious — needs confidence-building problems before harder material">Math-anxious — needs confidence-building</option>
       </select>
       <div class="val-msg" id="val-level">Please select a skill level.</div>
-      <div style="margin-top:6px;"><input type="text" id="custom-level" placeholder="Optional: e.g. 'preparing for placement test'"></div>
+      <div style="margin-top:6px;"><div style="font-size:11px;color:var(--gray-3);margin-bottom:4px;">Optional: add more context</div><input type="text" id="custom-level" placeholder="Optional: e.g. 'preparing for placement test'"></div>
     </div>
 
     <div class="field" id="field-course">
@@ -83,6 +83,7 @@
 
     <div class="field">
       <div class="field-label">What the Student is Struggling With <span class="badge">optional</span></div>
+      <div class="field-hint">Be specific — this shapes the questions more than any other field.</div>
       <textarea id="struggling-text" style="min-height:56px;" placeholder="e.g. Forgets to flip the inequality sign when dividing by a negative"></textarea>
     </div>
 
@@ -213,7 +214,7 @@
     const formatLine = formats.length === 1 ? formats[0] : formats.slice(0,-1).join(', ') + ', and ' + formats[formats.length-1];
 
     const prompt =
-`Before generating anything, ask me 2–3 clarifying questions about the student, their specific errors, or their upcoming assessment. Wait for my answers before generating.
+`Before generating anything, ask me 2–3 clarifying questions about anything not already covered in the details below that would help you produce a more targeted worksheet. Wait for my answers before generating.
 
 You are a math tutor assistant. Generate a student-facing practice worksheet. Do not solve all problems for the student — provide problems for them to work through, with solutions in the answer key only.
 

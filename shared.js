@@ -146,7 +146,7 @@ function buildBasePrompt({ skillLine, level, formats, test, draft, struggling, c
 
   const isWriting = sessionType === 'writing';
 
-  return `Before generating anything, ask me 2–3 clarifying questions about the student, their specific struggles, or their upcoming assessment. Wait for my answers before generating.
+  return `Before generating anything, ask me 2–3 clarifying questions about anything not already covered in the details below that would help you produce a more targeted worksheet. Wait for my answers before generating.
 
 You are a ${isWriting ? 'writing' : 'math'} tutor assistant. Generate a student-facing practice worksheet. Do not complete the student's assignment or write answers on their behalf.
 
@@ -163,7 +163,7 @@ WORKSHEET DETAILS
 ${categoryLine}
 SKILL(S): ${skillLine}
 FORMAT: ${formatLine}
-NUMBER OF QUESTIONS: ${qty} questions
+NUMBER OF QUESTIONS: ${qty}
 ${testSection}${draftSection}${strugglingSection}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 REQUIREMENTS
