@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SAT — Math — Tutoring Center</title>
+<title>SAT Math — Tutoring Center</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
 </head>
@@ -16,24 +16,195 @@
   </div>
   <div class="nav-sub">
     <a href="math-courses.html" class="nav-sub-link">Courses</a>
-    <a href="math-ged.html" class="nav-sub-link ">GED</a>
+    <a href="math-ged.html" class="nav-sub-link">GED</a>
     <a href="math-sat.html" class="nav-sub-link active">SAT</a>
-    <a href="math-tsi.html" class="nav-sub-link ">TSI</a>
+    <a href="math-tsi.html" class="nav-sub-link">TSI</a>
   </div>
 </nav>
-<div class="breadcrumb"><a href="index.html">Home</a> / <a href="math.html">Math</a> / SAT — Math</div>
+<div class="breadcrumb"><a href="index.html">Home</a> / <a href="math.html">Math</a> / SAT Math</div>
 <div class="layout">
-  <div class="form-panel" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 32px;">
-    <div style="font-size:48px;margin-bottom:16px;">🔢</div>
-    <h2 style="font-family:'DM Serif Display',serif;font-size:22px;color:#1a2744;margin-bottom:12px;">SAT — Math</h2>
-    <p style="font-size:13.5px;color:#9aa0b4;max-width:280px;line-height:1.7;">This tool is coming soon. In the meantime, use the <a href="math-courses.html" style="color:#2d5be3;">Math Courses</a> tool for practice problems aligned to your student's current course.</p>
-  </div>
-  <div class="output-panel" style="display:flex;align-items:center;justify-content:center;">
-    <div style="text-align:center;color:#9aa0b4;">
-      <div style="font-size:44px;margin-bottom:12px;opacity:0.4;">📋</div>
-      <p style="font-size:13px;">Coming soon</p>
+  <div class="form-panel">
+    <div class="panel-title">📋 SAT — Math</div>
+    <div class="field" id="field-level">
+      <div class="field-label">Student Skill Level <span class="badge">required</span></div>
+      <div class="field-hint">Pick the closest match, then add context below.</div>
+      <select id="select-level" onchange="clearErr('field-level')">
+        <option value="">— Select a skill level —</option>
+        <option value="Beginner — new to this topic; needs step-by-step foundational guidance">Beginner — new to this topic</option>
+        <option value="Developing — understands the concept but makes consistent procedural errors">Developing — consistent procedural errors</option>
+        <option value="Intermediate — can solve standard problems but struggles with multi-step or word problems">Intermediate — struggles with multi-step problems</option>
+        <option value="Advanced — solid understanding; needs challenge problems and edge cases">Advanced — needs challenge problems</option>
+        <option value="Multilingual learner — math vocabulary and word problem language needs extra scaffolding">Multilingual learner</option>
+        <option value="Math-anxious — needs confidence-building problems before harder material">Math-anxious — needs confidence-building</option>
+      </select>
+      <div class="val-msg" id="val-level">Please select a skill level.</div>
+      <div style="margin-top:6px;"><input type="text" id="custom-level" placeholder="Optional: e.g. 'aiming for 700+' or 'test in 2 weeks'"></div>
     </div>
+    <div class="field" id="field-skills">
+      <div class="field-label">SAT Math Skills <span class="badge">required</span></div>
+      <div class="field-hint">Core skills tested on SAT Math. Select one or more.</div>
+      <div class="chips-wrap" id="chips">
+        <div class="chip" data-skill="Linear equations & systems" onclick="toggleChip(this)">Linear equations & systems</div>
+        <div class="chip" data-skill="Quadratic & polynomial functions" onclick="toggleChip(this)">Quadratic & polynomial functions</div>
+        <div class="chip" data-skill="Exponential functions" onclick="toggleChip(this)">Exponential functions</div>
+        <div class="chip" data-skill="Ratios, rates & proportions" onclick="toggleChip(this)">Ratios, rates & proportions</div>
+        <div class="chip" data-skill="Percentages" onclick="toggleChip(this)">Percentages</div>
+        <div class="chip" data-skill="Statistics & data analysis" onclick="toggleChip(this)">Statistics & data analysis</div>
+        <div class="chip" data-skill="Geometry & trigonometry" onclick="toggleChip(this)">Geometry & trigonometry</div>
+        <div class="chip" data-skill="Problem solving in context — word problems" onclick="toggleChip(this)">Problem solving in context</div>
+      </div>
+      <div class="chip-note">Select one or more.</div>
+      <span class="other-skills-toggle" id="other-skills-btn" onclick="toggleOtherSkills()">▼ Other skills</span>
+      <div class="other-skills-section" id="other-skills-section">
+        <div class="other-skills-label">Additional skills not specific to SAT Math</div>
+        <div class="chips-wrap" id="other-skills-chips"></div>
+      </div>
+      <div class="val-msg" id="val-skills">Please select at least one skill.</div>
+    </div>
+    <div class="field" id="field-format">
+      <div class="field-label">Question Format <span class="badge">required</span></div>
+      <div class="field-hint" id="format-hint">Select a skill above to see formats.</div>
+      <div class="format-grid" id="format-grid"></div>
+      <div class="val-msg" id="val-format">Please select at least one format.</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Difficulty</div>
+      <div class="toggle-row">
+        <button class="toggle-btn" id="diff-foundational" onclick="setDifficulty('foundational')">Foundational</button>
+        <button class="toggle-btn active" id="diff-mixed" onclick="setDifficulty('mixed')">Mixed</button>
+        <button class="toggle-btn" id="diff-challenging" onclick="setDifficulty('challenging')">Challenging</button>
+      </div>
+    </div>
+    <div class="field">
+      <div class="field-label">What the Student is Struggling With <span class="badge">optional</span></div>
+      <textarea id="struggling-text" style="min-height:56px;" placeholder="e.g. Sets up systems of equations correctly but makes sign errors when substituting"></textarea>
+    </div>
+    <div class="field">
+      <div class="field-label">Sample Problem / Student Work <span class="badge">optional</span></div>
+      <textarea id="draft-text" style="min-height:56px;" placeholder="e.g. If 2x + y = 10 and x - y = 2, find x. Student wrote: 3x = 12, x = 4 ✓"></textarea>
+    </div>
+    <div class="field">
+      <div class="field-label">Number of Problems</div>
+      <div class="field-hint">Recommended: 8–12 for 60 min.</div>
+      <div class="stepper">
+        <button onclick="changeQty(-1)">−</button>
+        <div class="qty" id="qty-display">10</div>
+        <button onclick="changeQty(1)">+</button>
+      </div>
+    </div>
+    <button class="submit-btn" onclick="buildPrompt()">⚡ Build Prompt</button>
+  </div>
+  <div class="output-panel">
+    <div class="output-header">
+      <h2>📄 Your Prompt <button class="copy-btn" id="copy-btn" onclick="copyPrompt()" style="display:none;">📋 Copy Prompt</button></h2>
+    </div>
+    <div id="empty-state" class="empty-state">
+      <div class="es-icon">📋</div>
+      <h3>Your prompt will appear here</h3>
+      <p>Fill in the fields and click Build Prompt.</p>
+      <div class="step-list">
+        <span>1. Fill in the fields</span>
+        <span>2. Click Build Prompt</span>
+        <span>3. Click inside the box → Ctrl+A → Ctrl+C</span>
+        <span>4. Paste into Claude or ChatGPT</span>
+      </div>
+    </div>
+    <textarea id="prompt-output" class="prompt-box" style="display:none;" readonly onclick="this.select()"></textarea>
+    <div id="copy-hint" class="copy-hint">✓ Text selected — press Ctrl+C to copy</div>
   </div>
 </div>
+<script src="shared.js"></script>
+<script>
+  const TEST_NAME = 'SAT Math';
+  const otherSkills = [
+    {skill:'Inequalities',label:'Inequalities'},
+    {skill:'Functions & function notation',label:'Functions & function notation'},
+    {skill:'Exponents & radicals',label:'Exponents & radicals'},
+    {skill:'Polynomials',label:'Polynomials'},
+    {skill:'Rational expressions',label:'Rational expressions'},
+    {skill:'Probability basics',label:'Probability basics'},
+    {skill:'Mean, median, mode & range',label:'Mean, median, mode & range'},
+    {skill:'Unit circle',label:'Unit circle'},
+    {skill:'Trig ratios (SOH-CAH-TOA)',label:'SOH-CAH-TOA'}
+  ];
+  const formatMap = {
+    'Linear equations & systems':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'4 options, one correct'},{fmt:'student-produced response (grid-in)',name:'Grid-In',desc:'No answer choices — student produces the answer'},{fmt:'show your work',name:'Show Your Work',desc:'Step-by-step solve'},{fmt:'graph interpretation',name:'Graph Interpretation',desc:'Read and interpret a graph'}],
+    'Quadratic & polynomial functions':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'4 options, one correct'},{fmt:'student-produced response (grid-in)',name:'Grid-In',desc:'Student produces the answer'},{fmt:'show your work',name:'Show Your Work',desc:'Solve step by step'},{fmt:'graph interpretation',name:'Graph Interpretation',desc:'Read and interpret the graph'}],
+    'Exponential functions':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'4 options, one correct'},{fmt:'student-produced response (grid-in)',name:'Grid-In',desc:'Student produces the answer'},{fmt:'show your work',name:'Show Your Work',desc:'Evaluate or solve step by step'},{fmt:'graph interpretation',name:'Graph Interpretation',desc:'Read and interpret the graph'}],
+    'Ratios, rates & proportions':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'4 options, one correct'},{fmt:'student-produced response (grid-in)',name:'Grid-In',desc:'Student produces the answer'},{fmt:'show your work',name:'Show Your Work',desc:'Set up and solve step by step'}],
+    'Percentages':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'4 options, one correct'},{fmt:'student-produced response (grid-in)',name:'Grid-In',desc:'Student produces the answer'},{fmt:'show your work',name:'Show Your Work',desc:'Step-by-step solve'}],
+    'Statistics & data analysis':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'4 options, one correct'},{fmt:'graph interpretation',name:'Graph Interpretation',desc:'Read and interpret a chart, table, or scatter plot'},{fmt:'student-produced response (grid-in)',name:'Grid-In',desc:'Student produces the answer'}],
+    'Geometry & trigonometry':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'4 options, one correct'},{fmt:'student-produced response (grid-in)',name:'Grid-In',desc:'Student produces the answer'},{fmt:'show your work',name:'Show Your Work',desc:'Apply formulas step by step'},{fmt:'graph interpretation',name:'Graph Interpretation',desc:'Read and interpret a geometric figure'}],
+    'Problem solving in context — word problems':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'4 options, one correct'},{fmt:'student-produced response (grid-in)',name:'Grid-In',desc:'Student produces the answer'},{fmt:'show your work',name:'Show Your Work',desc:'Set up and solve'}],
+    'Inequalities':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'4 options, one correct'},{fmt:'student-produced response (grid-in)',name:'Grid-In',desc:'Student produces the answer'},{fmt:'show your work',name:'Show Your Work',desc:'Solve step by step'}],
+    'Functions & function notation':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'4 options, one correct'},{fmt:'student-produced response (grid-in)',name:'Grid-In',desc:'Student produces the answer'},{fmt:'show your work',name:'Show Your Work',desc:'Evaluate or compose'}],
+    'Exponents & radicals':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'4 options, one correct'},{fmt:'student-produced response (grid-in)',name:'Grid-In',desc:'Student produces the answer'},{fmt:'show your work',name:'Show Your Work',desc:'Simplify step by step'}],
+    'Polynomials':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Factor or expand step by step'}],
+    'Rational expressions':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Simplify or operate step by step'}],
+    'Probability basics':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'4 options, one correct'},{fmt:'student-produced response (grid-in)',name:'Grid-In',desc:'Student produces the answer'}],
+    'Mean, median, mode & range':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'4 options, one correct'},{fmt:'student-produced response (grid-in)',name:'Grid-In',desc:'Student produces the answer'},{fmt:'show your work',name:'Show Your Work',desc:'Calculate step by step'}],
+    'Unit circle':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'4 options, one correct'},{fmt:'student-produced response (grid-in)',name:'Grid-In',desc:'Student produces the answer'}],
+    'Trig ratios (SOH-CAH-TOA)':[{fmt:'4-option multiple choice (SAT style)',name:'MC — SAT Style',desc:'4 options, one correct'},{fmt:'student-produced response (grid-in)',name:'Grid-In',desc:'Student produces the answer'},{fmt:'show your work',name:'Show Your Work',desc:'Set up and solve the ratio'}]
+  };
+  buildOtherSkillsSection(otherSkills, toggleOtherChip);
+  function getAllSelectedSkills(){return[...Array.from(document.querySelectorAll('#chips .chip.selected')),...Array.from(document.querySelectorAll('#other-skills-chips .chip.selected'))].map(c=>c.dataset.skill);}
+  function getSelectedFormatOptions(){const skills=getAllSelectedSkills(),seen=new Set(),fmts=[];for(const s of skills)for(const f of(formatMap[s]||[])){if(!seen.has(f.fmt)){seen.add(f.fmt);fmts.push(f);}}return fmts;}
+  function toggleChip(el){el.classList.toggle('selected');clearErr('field-skills');renderFormatCards(getSelectedFormatOptions());}
+  function toggleOtherChip(el){el.classList.toggle('selected');clearErr('field-skills');renderFormatCards(getSelectedFormatOptions());}
+  function buildPrompt(){
+    const skills=getAllSelectedSkills();let ok=true;
+    if(!getLevel()){document.getElementById('field-level').classList.add('error');ok=false;}
+    if(!skills.length){document.getElementById('field-skills').classList.add('error');ok=false;}
+    if(!getFormats().length){document.getElementById('field-format').classList.add('error');ok=false;}
+    if(!ok)return;
+    const formats=getFormats();
+    const formatLine=formats.length===1?formats[0]:formats.slice(0,-1).join(', ')+', and '+formats[formats.length-1];
+    const struggling=document.getElementById('struggling-text').value.trim();
+    const sample=document.getElementById('draft-text').value.trim();
+    const difficultyLine={foundational:'All problems should be foundational and confidence-building.',mixed:'Progress from foundational problems to more challenging ones.',challenging:'Emphasize challenging problems typical of the harder end of the SAT Math section.'}[difficulty];
+    showPrompt(`Before generating anything, ask me 2–3 clarifying questions about the student, their specific errors, or their target score and test date. Wait for my answers before generating.
+
+You are a math tutor assistant helping a student prepare for the ${TEST_NAME}. Generate a student-facing practice worksheet. Do not solve problems for the student — provide problems for them to work through, with full solutions in the answer key only.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STUDENT CONTEXT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STUDENT SKILL LEVEL: ${getLevel()}
+TEST PREP TARGET: ${TEST_NAME}
+SESSION LENGTH: 60 minutes
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+WORKSHEET DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SKILL(S): ${skills.join(', ')}
+FORMAT: ${formatLine}
+NUMBER OF PROBLEMS: ${qty}
+${struggling?`\nSPECIFIC STRUGGLES:\n${struggling}\nPrioritize problems that directly address these patterns.\n`:''}${sample?`\nSAMPLE PROBLEM / STUDENT WORK:\n${sample}\nBuild at least 3 problems around this example or error pattern.\n`:''}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+REQUIREMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+• Calibrate all problems to the SAT Math section: use SAT-style problem stems, realistic applied contexts, and difficulty levels consistent with the actual exam.
+• Multiple choice: 4 options (SAT style). One correct, three wrong — each reflecting a specific common mistake.
+• Grid-in (student-produced response): no answer choices. Student writes their answer. Include a note that answers can be fractions or decimals and must fit the grid format.
+• Show your work: leave space for student work. Full step-by-step solutions in the answer key only.
+• ${difficultyLine}
+• Use realistic contexts typical of SAT Math (science data, financial scenarios, geometric figures, rate problems).
+• Avoid calculator-dependent problems unless the skill specifically requires it — note when a calculator would/would not be permitted.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OUTPUT STRUCTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. WORKSHEET — student-facing problems only. No answers visible.
+2. ANSWER KEY — complete step-by-step solution per problem. For MC, explain why each wrong answer is wrong.
+3. TUTOR TALK MOVES — 3–5 spoken questions tied to specific problem numbers to prompt student thinking.
+4. SELF-CHECK — confirm: all problems solvable, all solutions correct, style matches SAT Math. Flag anything uncertain.
+
+After all four sections, produce a downloadable Word document (.docx) with clear headings for each section.`);
+  }
+</script>
 </body>
 </html>
