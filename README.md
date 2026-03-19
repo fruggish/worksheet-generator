@@ -1,5 +1,5 @@
 # Tutoring Center Worksheet *Prompt* Generator
-This tool is meant to generate prompts to provide an AI tool, preferably Claude.ai. 
+This tool is meant to generate prompts to provide an AI tool, preferably Claude.ai. In the future, I'd like it to just generate the document itself. 
 It begins asking whether you want something for writing help or math help.
 ## If Writing
 You'll be given options of general writing skills (ex. for writing courses at the college level) and various standardized tests (e.g. SAT, GED, TSIA2). 
