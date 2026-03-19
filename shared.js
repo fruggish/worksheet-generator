@@ -183,7 +183,7 @@ OUTPUT STRUCTURE
 
 2. ANSWER KEY — correct answer + one-sentence rule explanation per question.
 
-3. TUTOR TALK MOVES — 3–5 spoken questions tied to specific question numbers to prompt student thinking.
+3. STUDY TIPS & SELF-CHECK — 3–5 student-facing strategy tips specific to the skill(s) above (e.g. "When identifying the main idea, ask yourself: what is every paragraph trying to say?"), followed by a short checklist of 3–4 questions the student can ask themselves before submitting their work (e.g. "Did I support my claim with evidence from the text?"). Write directly to the student using "you" language. Keep each tip to one or two sentences.
 
 Before producing any output, internally verify: no invented facts or sources, no ghostwriting, all questions match the skill(s) listed. If anything fails this check, fix it before outputting. Do not include the self-check as a section in the output.
 
