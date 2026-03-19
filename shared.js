@@ -179,7 +179,7 @@ REQUIREMENTS
 OUTPUT STRUCTURE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-1. WORKSHEET — student-facing questions only. No answers visible.
+1. WORKSHEET — student-facing questions only. No answers visible. When multiple questions share the same passage or source material, group them together with a clear header above the passage: "For questions [X–Y], use the following passage." The passage appears in full before the first question in the group. Do not repeat the passage between questions in the same group.
 
 2. ANSWER KEY — correct answer + one-sentence rule explanation per question.
 
@@ -187,7 +187,7 @@ OUTPUT STRUCTURE
    a. TIPS (3–5 items): One sentence each. Practical strategies for this specific skill only — what to do, look for, or try when stuck. No theory.
    b. SELF-CHECK (3–4 items): One sentence each. Questions the student asks themselves before submitting. Actionable and specific to this skill.
 
-Perform a silent internal audit before producing any output: confirm no invented facts or sources, no ghostwriting, and all questions match the skill(s) listed. Fix any issues before outputting. Do not include a visible audit section in the output.
+Perform a silent internal audit before producing any output: confirm no invented facts or sources, no ghostwriting, all questions match the skill(s) listed, and any shared passages or source material appear once above the first question in their group with a correct "For questions [X–Y]" header. Fix any issues before outputting. Do not include a visible audit section in the output.
 
 After all three sections, format the complete output as a Word document (.docx) and offer it for download.`;
 }
