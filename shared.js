@@ -171,7 +171,11 @@ REQUIREMENTS
 
 • Questions must require active thinking — not just copying or filling in a word.
 • NON-NEGOTIABLE: Each wrong answer must represent a distinct error type — no two distractors may stem from the same mistake.
+• NON-NEGOTIABLE: Distribute correct answers across all option letters (A, B, C, D) throughout the worksheet. No letter may be the correct answer more than twice consecutively. Before finalizing the worksheet, verify the distribution is reasonably balanced.
+• NON-NEGOTIABLE: For each multiple choice problem, before writing the answer choices: (1) state the correct answer and why, (2) identify the specific misconception or error each distractor targets, then write the distractor. Do this silently — do not include it in the output.
+• Obvious tells are prohibited: the correct answer may not be the longest option, the most hedged or qualified option, or grammatically inconsistent with the question stem.
 • ${difficultyLine}
+• For mixed and challenging difficulty: at least one distractor per problem must be "second-best" — it passes a quick read but is eliminated by a specific word, qualifier, or condition in the problem. Name what makes it wrong in the answer key.
 • Use realistic, college-level content (civic issues, workplace, academic writing, everyday scenarios).
 • Do not invent sources or citations. Use placeholders if needed: [Source: peer-reviewed article on X].${testReq}
 
