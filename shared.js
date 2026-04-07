@@ -171,6 +171,12 @@ DIFFICULTY: ${difficultyLine}
 MODULAR WORKFLOW — FOLLOW IN ORDER
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+STEP 0 — CLARIFY (MANDATORY — DO NOT SKIP)
+• Before generating the worksheet, ask exactly 2 targeted clarifying questions.
+• Questions must be specific and directly impact worksheet design (e.g., topic preference, reading length tolerance, timing, or test conditions).
+• Do not generate any part of the worksheet until the user responds.
+• If the user does not respond, ask again once. If still no response, proceed using defaults aligned with the student score.
+
 STEP 1 — GENERATE QUESTIONS
 • Generate all questions first, without answer choices or explanations.
 • Questions must require active thinking — not just copying or filling in a word.
