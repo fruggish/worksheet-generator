@@ -19,6 +19,7 @@
     <a href="math-ged.html" class="nav-sub-link">GED</a>
     <a href="math-sat.html" class="nav-sub-link">SAT</a>
     <a href="math-tsi.html" class="nav-sub-link active">TSI</a>
+    <a href="math-asvab.html" class="nav-sub-link">ASVAB</a>
   </div>
 </nav>
 <div class="breadcrumb"><a href="index.html">Home</a> / <a href="math.html">Math</a> / TSI Math</div>
@@ -187,71 +188,33 @@ SKILL(S): ${skills.join(', ')}
 FORMAT: ${formatLine}
 NUMBER OF PROBLEMS: ${qty}
 ${scoreBlock}${struggling?`\nSPECIFIC STRUGGLES:\n${struggling}\nPrioritize problems that directly address these patterns.\n`:''}${sample?`\nSAMPLE PROBLEM / STUDENT WORK:\n${sample}\nBuild at least 3 problems around this example or error pattern.\n`:''}
-DIFFICULTY: ${difficultyLine}
-
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-MODULAR WORKFLOW — FOLLOW IN ORDER
+REQUIREMENTS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-STEP 0 — CLARIFY (MANDATORY — DO NOT SKIP)
-• Before generating the worksheet, ask exactly 2 targeted clarifying questions.
-• Questions must be specific and directly impact worksheet design (e.g., topic preference, reading length tolerance, timing, or test conditions).
-• Do not generate any part of the worksheet until the user responds.
-• If the user does not respond, ask again once. If still no response, proceed using defaults aligned with the student score.
-
-STEP 1 — GENERATE PROBLEMS
-• Generate all problems first, without answers or distractors.
-• Calibrate all problems to the TSI Assessment Math section: use TSI-style stems, community college placement contexts (budgeting, measurement, scheduling, basic science), and difficulty consistent with the actual exam.
-• For each format included:
-  - Multiple choice: write the stem and scenario only — no options yet.
-  - Show your work: write the problem and leave space for student work.
-  - Error identification: write a fully worked solution containing exactly one mistake.
-  - Fill in the blank: write the problem with the missing step or value clearly indicated.
-• When multiple problems share the same data set, table, chart, or scenario, place that material once above the first problem in the group with the header: "For problems [X–Y], use the following [table/chart/scenario]."
-
-STEP 2 — CREATE LOCKED ANSWER SEQUENCE (MULTIPLE CHOICE ONLY)
-• Internally generate a correct-answer position sequence covering all MC problems.
-• Use only letters A, B, C, D (TSI uses 4-option MC).
-• No letter may appear more than twice consecutively.
-• The sequence must appear irregular — avoid repeating patterns.
-• Lock this sequence before proceeding. It determines where the correct answer will be placed, not what it is.
-
-STEP 3 — SOLVE AND ASSIGN
-• Solve each problem fully to determine the correct value or answer.
-• For MC problems: place the correct answer in the slot indicated by the locked sequence. Build the remaining three slots around it.
-• Verify that the correct value is in the assigned slot and the problem is solvable as written.
-
-STEP 4 — GENERATE DISTRACTORS (MULTIPLE CHOICE ONLY)
-• For each MC problem:
-  1. Identify the specific misconception or arithmetic error each of the three distractors will represent — do this before writing them.
-  2. No two distractors may stem from the same mistake.
-  3. At least one distractor must be "second-best": it passes a quick read but is eliminated by a specific word, condition, or qualifier in the problem. Name what makes it wrong in the answer key.
-  4. Obvious tells are prohibited: the correct answer may not be the longest option, the most hedged or qualified option, or grammatically inconsistent with the question stem.
-
-STEP 5 — INTERNAL AUDIT (STRICT — FIX BEFORE OUTPUTTING)
-• Reconstruct the correct-answer sequence from the completed MC problems. Confirm no letter appears more than twice consecutively.
-• Confirm all solutions are mathematically correct.
-• Confirm all distractors target distinct errors and at least one per MC problem is genuinely second-best.
-• Confirm show-your-work and error-identification problems contain no answers or solutions in the worksheet section.
-• Confirm shared materials appear once, above the first problem in their group, with a correct "For problems [X–Y]" header.
-• Confirm style matches TSI Assessment Math format and difficulty throughout.
-• Confirm total problem count matches the requested quantity.
-• Fix any failures before outputting. Do not include a visible audit section in the output.
+• Calibrate all problems to the TSI Assessment Math section: use TSI-style stems, community college placement contexts, and difficulty consistent with the actual exam.
+• NON-NEGOTIABLE: Multiple choice: 4 options (TSI style). One correct, three wrong — each must represent a distinct error type. No two distractors may stem from the same mistake.
+• NON-NEGOTIABLE: Before finalizing each problem, verify the full solution top-to-bottom with the chosen values to confirm it produces a clean, unambiguous answer before writing the distractors.
+• Show your work: leave space for student work. Full step-by-step solutions in the answer key only.
+• Error identification: one mistake in a fully worked problem. Student finds and corrects it.
+• Fill in the blank: student completes a missing step or value.
+• ${difficultyLine}
+• Use realistic, everyday contexts appropriate for community college placement (budgeting, measurement, scheduling, basic science).
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-STEP 6 — FINAL OUTPUT
+OUTPUT STRUCTURE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-1. WORKSHEET — student-facing problems only. No answers or solutions visible.
+1. WORKSHEET — student-facing problems only. No answers visible. When multiple problems share the same data set, table, chart, or scenario, group them together with a clear header above the shared material: "For problems [X–Y], use the following [table/chart/scenario]." The shared material appears in full before the first problem in the group. Do not repeat it between problems in the same group.
 Close this section with: [Compliance: Worksheet — X problems, shared material grouped Y/N, no answers visible Y/N]
-
-2. ANSWER KEY — complete step-by-step solution per problem. For MC, name the correct answer letter and explain in one sentence why each wrong answer is wrong.
+2. ANSWER KEY — complete step-by-step solution per problem. For MC, explain why each wrong answer is wrong.
 Close this section with: [Compliance: Answer Key — X entries, step-by-step solution provided Y/N]
-
 3. STUDY TIPS & SELF-CHECK — fits on up to two printed pages. Do not explain or teach the concept. Write directly to the student using "you" language.
    a. TIPS (3–5 items): One sentence each. Practical strategies for this specific skill only — what to do, look for, or try when stuck. No theory.
    b. SELF-CHECK (3–4 items): One sentence each. Questions the student asks themselves before submitting. Actionable and specific to this skill.
 Close this section with: [Compliance: Study Tips — X tips, Y checklist items, student-facing language Y/N]
+
+Perform a silent internal audit before producing any output: confirm all problems are solvable as written, all solutions are mathematically correct, style matches TSI Math, and any shared data sets or source material appear once above the first problem in their group with a correct "For problems [X–Y]" header. Fix any issues before outputting. Do not include a visible audit section in the output.
 
 After all three sections, format the complete output as a Word document (.docx) and offer it for download.`);
   }

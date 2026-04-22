@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASVAB Math — Tutoring Center</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-brand"><div class="nav-icon">🎓</div><span class="nav-title">Tutoring Center</span></a>
+  <div class="nav-links">
+    <a href="writing.html" class="nav-link">Writing</a>
+    <a href="math.html" class="nav-link active">Math</a>
+  </div>
+  <div class="nav-sub">
+    <a href="math-courses.html" class="nav-sub-link">Courses</a>
+    <a href="math-ged.html" class="nav-sub-link">GED</a>
+    <a href="math-sat.html" class="nav-sub-link">SAT</a>
+    <a href="math-tsi.html" class="nav-sub-link">TSI</a>
+    <a href="math-asvab.html" class="nav-sub-link active">ASVAB</a>
+  </div>
+</nav>
+<div class="breadcrumb"><a href="index.html">Home</a> / <a href="math.html">Math</a> / ASVAB Math</div>
+
+<div class="layout">
+  <div class="form-panel">
+    <div class="panel-title">📋 ASVAB — Math (AR & MK)</div>
+
+    <div class="field" id="field-level">
+      <div class="field-label">Student Skill Level <span class="badge">required</span></div>
+      <div class="field-hint">Pick the closest match, then add context below.</div>
+      <select id="select-level" onchange="clearErr('field-level')">
+        <option value="">— Select a skill level —</option>
+        <option value="Beginner — new to this topic; needs step-by-step foundational guidance">Beginner — new to this topic</option>
+        <option value="Developing — understands the concept but makes consistent procedural errors">Developing — consistent procedural errors</option>
+        <option value="Intermediate — can solve standard problems but struggles with multi-step or word problems">Intermediate — struggles with multi-step problems</option>
+        <option value="Advanced — solid understanding; needs challenge problems and edge cases">Advanced — needs challenge problems</option>
+        <option value="Multilingual learner — math vocabulary and word problem language needs extra scaffolding">Multilingual learner</option>
+        <option value="Math-anxious — needs confidence-building problems before harder material">Math-anxious — needs confidence-building</option>
+      </select>
+      <div class="val-msg" id="val-level">Please select a skill level.</div>
+      <div style="margin-top:6px;"><div style="font-size:11px;color:var(--gray-3);margin-bottom:4px;">Optional: add more context</div><input type="text" id="custom-level" placeholder="Optional: e.g. 'Navy enlistment goal' or 'test in 3 weeks'"></div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">AFQT Composite Score <span class="badge">optional</span></div>
+      <div class="field-hint">Percentile score (0–99) from score report. Minimum by branch: Army 31 · Marines 32 · Navy 35 · Air Force/Space Force 36 · Coast Guard 40. If blank, skill level and difficulty are used instead.</div>
+      <input type="text" id="afqt-input" placeholder="e.g. 38" style="max-width:120px;">
+    </div>
+
+    <div class="field">
+      <div class="field-label">Subtest Standard Score <span class="badge">optional</span></div>
+      <div class="field-hint">Individual AR or MK score (scale 20–80). Below 40 = significant gaps. 40–49 = approaching average. 50+ = at or above average. If blank, AFQT and skill level are used instead.</div>
+      <input type="text" id="subtest-input" placeholder="e.g. 46" style="max-width:120px;">
+    </div>
+
+    <div class="field" id="field-skills">
+      <div class="field-label">ASVAB Math Skills <span class="badge">required</span></div>
+      <div class="field-hint">Core math skills tested on the ASVAB. Select one or more.</div>
+      <div class="chips-wrap" id="chips">
+        <div class="chip" data-skill="Arithmetic Reasoning — ratios, proportions & rates" onclick="toggleChip(this)">Ratios, proportions & rates</div>
+        <div class="chip" data-skill="Arithmetic Reasoning — percentages & percent change" onclick="toggleChip(this)">Percentages & percent change</div>
+        <div class="chip" data-skill="Arithmetic Reasoning — basic algebra in context" onclick="toggleChip(this)">Basic algebra in context</div>
+        <div class="chip" data-skill="Arithmetic Reasoning — geometry in context (area, perimeter, volume)" onclick="toggleChip(this)">Geometry in context</div>
+        <div class="chip" data-skill="Arithmetic Reasoning — number operations & estimation" onclick="toggleChip(this)">Number operations & estimation</div>
+        <div class="chip" data-skill="Arithmetic Reasoning — multi-step word problems" onclick="toggleChip(this)">Multi-step word problems</div>
+        <div class="chip" data-skill="Mathematics Knowledge — linear equations & inequalities" onclick="toggleChip(this)">Linear equations & inequalities</div>
+        <div class="chip" data-skill="Mathematics Knowledge — quadratic equations" onclick="toggleChip(this)">Quadratic equations</div>
+        <div class="chip" data-skill="Mathematics Knowledge — exponents & radicals" onclick="toggleChip(this)">Exponents & radicals</div>
+        <div class="chip" data-skill="Mathematics Knowledge — polynomials" onclick="toggleChip(this)">Polynomials</div>
+        <div class="chip" data-skill="Mathematics Knowledge — probability basics" onclick="toggleChip(this)">Probability basics</div>
+        <div class="chip" data-skill="Mathematics Knowledge — number properties & operations" onclick="toggleChip(this)">Number properties & operations</div>
+        <div class="chip" data-skill="Mathematics Knowledge — geometry (angles, triangles, circles)" onclick="toggleChip(this)">Geometry — angles, triangles, circles</div>
+      </div>
+      <div class="chip-note">Select one or more.</div>
+      <span class="other-skills-toggle" id="other-skills-btn" onclick="toggleOtherSkills()">▼ Other skills</span>
+      <div class="other-skills-section" id="other-skills-section">
+        <div class="other-skills-label">Additional skills not specific to ASVAB Math</div>
+        <div class="chips-wrap" id="other-skills-chips"></div>
+      </div>
+      <div class="val-msg" id="val-skills">Please select at least one skill.</div>
+    </div>
+
+    <div class="field" id="field-format">
+      <div class="field-label">Question Format <span class="badge">required</span></div>
+      <div class="field-hint" id="format-hint">Select a skill above to see formats.</div>
+      <div class="format-grid" id="format-grid"></div>
+      <div class="val-msg" id="val-format">Please select at least one format.</div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Difficulty</div>
+      <div class="toggle-row">
+        <button class="toggle-btn" id="diff-foundational" onclick="setDifficulty('foundational')">Foundational</button>
+        <button class="toggle-btn active" id="diff-mixed" onclick="setDifficulty('mixed')">Mixed</button>
+        <button class="toggle-btn" id="diff-challenging" onclick="setDifficulty('challenging')">Challenging</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">What the Student is Struggling With <span class="badge">optional</span></div>
+      <div class="field-hint">Be specific — this shapes the questions more than any other field.</div>
+      <textarea id="struggling-text" style="min-height:56px;" placeholder="e.g. Sets up word problems correctly but makes arithmetic errors at the end"></textarea>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Sample Problem / Student Work <span class="badge">optional</span></div>
+      <textarea id="draft-text" style="min-height:56px;" placeholder="e.g. A car travels 150 miles in 3 hours. Student wrote: speed = 150 × 3 = 450 mph"></textarea>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Number of Problems</div>
+      <div class="field-hint">Recommended: 8–12 for 60 min.</div>
+      <div class="stepper">
+        <button onclick="changeQty(-1)">−</button>
+        <div class="qty" id="qty-display">10</div>
+        <span style="font-size:13px;font-weight:600;color:var(--gray-4);padding-left:8px;line-height:36px;">problems</span>
+        <button onclick="changeQty(1)">+</button>
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="buildPrompt()">⚡ Build Prompt</button>
+  </div>
+
+  <div class="output-panel">
+    <div class="output-header">
+      <h2>📄 Your Prompt <button class="copy-btn" id="copy-btn" onclick="copyPrompt()" style="display:none;">📋 Copy Prompt</button></h2>
+    </div>
+    <div id="empty-state" class="empty-state">
+      <div class="es-icon">📋</div>
+      <h3>Your prompt will appear here</h3>
+      <p>Fill in the fields and click Build Prompt.</p>
+      <div class="step-list">
+        <span>1. Fill in the fields</span>
+        <span>2. Click Build Prompt</span>
+        <span>3. Click inside the box → Ctrl+A → Ctrl+C</span>
+        <span>4. Paste into Claude or ChatGPT</span>
+      </div>
+    </div>
+    <textarea id="prompt-output" class="prompt-box" style="display:none;" readonly onclick="this.select()"></textarea>
+    <div id="copy-hint" class="copy-hint">✓ Text selected — press Ctrl+C to copy</div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+  const TEST_NAME = 'ASVAB Math';
+
+  const otherSkills = [
+    {skill:'Fractions & decimals',label:'Fractions & decimals'},
+    {skill:'Percentages',label:'Percentages'},
+    {skill:'Order of operations',label:'Order of operations'},
+    {skill:'Integer operations',label:'Integer operations'},
+    {skill:'Inequalities',label:'Inequalities'},
+    {skill:'Rational expressions',label:'Rational expressions'},
+    {skill:'Mean, median, mode & range',label:'Mean, median, mode & range'},
+    {skill:'Word problems & applied math',label:'Word problems & applied math'},
+    {skill:'Functions & graphs',label:'Functions & graphs'}
+  ];
+
+  const formatMap = {
+    'Arithmetic Reasoning — ratios, proportions & rates': [
+      {fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},
+      {fmt:'show your work',name:'Show Your Work',desc:'Set up and solve step by step'},
+      {fmt:'error identification',name:'Error ID',desc:'Find the setup or calculation error'}
+    ],
+    'Arithmetic Reasoning — percentages & percent change': [
+      {fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},
+      {fmt:'show your work',name:'Show Your Work',desc:'Step-by-step solve'},
+      {fmt:'error identification',name:'Error ID',desc:'Find the calculation error'}
+    ],
+    'Arithmetic Reasoning — basic algebra in context': [
+      {fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},
+      {fmt:'show your work',name:'Show Your Work',desc:'Set up and solve step by step'},
+      {fmt:'error identification',name:'Error ID',desc:'Find the setup or algebra error'}
+    ],
+    'Arithmetic Reasoning — geometry in context (area, perimeter, volume)': [
+      {fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},
+      {fmt:'show your work',name:'Show Your Work',desc:'Apply the formula step by step'},
+      {fmt:'error identification',name:'Error ID',desc:'Find the formula misapplication'}
+    ],
+    'Arithmetic Reasoning — number operations & estimation': [
+      {fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},
+      {fmt:'show your work',name:'Show Your Work',desc:'Step-by-step solve'},
+      {fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing step'}
+    ],
+    'Arithmetic Reasoning — multi-step word problems': [
+      {fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},
+      {fmt:'show your work',name:'Show Your Work',desc:'Set up and solve each step'},
+      {fmt:'error identification',name:'Error ID',desc:'Find where the setup or calculation went wrong'}
+    ],
+    'Mathematics Knowledge — linear equations & inequalities': [
+      {fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},
+      {fmt:'show your work',name:'Show Your Work',desc:'Solve step by step'},
+      {fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing step'},
+      {fmt:'error identification',name:'Error ID',desc:'Find where the solve went wrong'}
+    ],
+    'Mathematics Knowledge — quadratic equations': [
+      {fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},
+      {fmt:'show your work',name:'Show Your Work',desc:'Solve step by step'},
+      {fmt:'error identification',name:'Error ID',desc:'Find the mistake'}
+    ],
+    'Mathematics Knowledge — exponents & radicals': [
+      {fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},
+      {fmt:'show your work',name:'Show Your Work',desc:'Simplify step by step'},
+      {fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing step'},
+      {fmt:'error identification',name:'Error ID',desc:'Find the rule misapplication'}
+    ],
+    'Mathematics Knowledge — polynomials': [
+      {fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},
+      {fmt:'show your work',name:'Show Your Work',desc:'Factor or expand step by step'},
+      {fmt:'error identification',name:'Error ID',desc:'Find the distribution or sign error'}
+    ],
+    'Mathematics Knowledge — probability basics': [
+      {fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},
+      {fmt:'show your work',name:'Show Your Work',desc:'Set up and solve'},
+      {fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing probability'}
+    ],
+    'Mathematics Knowledge — number properties & operations': [
+      {fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},
+      {fmt:'show your work',name:'Show Your Work',desc:'Step-by-step solve'},
+      {fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing step'},
+      {fmt:'error identification',name:'Error ID',desc:'Find the arithmetic error'}
+    ],
+    'Mathematics Knowledge — geometry (angles, triangles, circles)': [
+      {fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},
+      {fmt:'show your work',name:'Show Your Work',desc:'Apply the formula step by step'},
+      {fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing measurement'},
+      {fmt:'error identification',name:'Error ID',desc:'Find the formula or property misapplication'}
+    ],
+    'Fractions & decimals':[{fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Step-by-step solve'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing step'}],
+    'Percentages':[{fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Step-by-step solve'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the missing value'}],
+    'Order of operations':[{fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Step-by-step solve'},{fmt:'error identification',name:'Error ID',desc:'Find where order was applied wrong'}],
+    'Integer operations':[{fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Step-by-step solve'},{fmt:'error identification',name:'Error ID',desc:'Find the sign error'}],
+    'Inequalities':[{fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Solve and describe solution set'},{fmt:'error identification',name:'Error ID',desc:'Find the sign flip error'}],
+    'Rational expressions':[{fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Simplify or operate step by step'},{fmt:'error identification',name:'Error ID',desc:'Find the cancellation or LCD error'}],
+    'Mean, median, mode & range':[{fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Calculate step by step'},{fmt:'error identification',name:'Error ID',desc:'Find the calculation error'}],
+    'Word problems & applied math':[{fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Set up and solve'},{fmt:'error identification',name:'Error ID',desc:'Find where setup or calculation went wrong'}],
+    'Functions & graphs':[{fmt:'4-option multiple choice (ASVAB style)',name:'MC — ASVAB Style',desc:'4 options, one correct'},{fmt:'show your work',name:'Show Your Work',desc:'Evaluate or analyze step by step'},{fmt:'fill in the blank',name:'Fill in the Blank',desc:'Complete the function table or equation'}]
+  };
+
+  buildOtherSkillsSection(otherSkills, toggleOtherChip);
+
+  function getAllSelectedSkills() {
+    return [
+      ...Array.from(document.querySelectorAll('#chips .chip.selected')),
+      ...Array.from(document.querySelectorAll('#other-skills-chips .chip.selected'))
+    ].map(c => c.dataset.skill);
+  }
+
+  function getSelectedFormatOptions() {
+    const skills = getAllSelectedSkills();
+    const seen = new Set(); const fmts = [];
+    for (const s of skills) for (const f of (formatMap[s] || [])) {
+      if (!seen.has(f.fmt)) { seen.add(f.fmt); fmts.push(f); }
+    }
+    return fmts;
+  }
+
+  function toggleChip(el) { el.classList.toggle('selected'); clearErr('field-skills'); renderFormatCards(getSelectedFormatOptions()); }
+  function toggleOtherChip(el) { el.classList.toggle('selected'); clearErr('field-skills'); renderFormatCards(getSelectedFormatOptions()); }
+
+  function getASVABScoreSection() {
+    const afqt = document.getElementById('afqt-input').value.trim();
+    const sub  = document.getElementById('subtest-input').value.trim();
+    if (!afqt && !sub) return '';
+    let block = '\n';
+    if (afqt) {
+      block += `AFQT COMPOSITE SCORE: ${afqt} (percentile)\n`;
+      block += `AFQT context: This is the enlistment eligibility score. Minimum by branch — Army: 31, Marines: 32, Navy: 35, Air Force/Space Force: 36, Coast Guard: 40. Below 31 = not yet eligible for most branches. Use this score to gauge overall math readiness and calibrate problem complexity.\n`;
+    }
+    if (sub) {
+      block += `SUBTEST STANDARD SCORE: ${sub} (scale 20–80)\n`;
+      block += `Subtest context: Below 40 = significant skill gaps. 40–49 = approaching average. 50–59 = average. 60+ = above average. Use this score to set problem difficulty and prioritize the skill areas most predictive of this score range.\n`;
+    }
+    block += `Use whichever score(s) are provided to calibrate difficulty and prioritize skill gaps. If both fields are blank, rely on skill level and difficulty settings above.\n`;
+    return block;
+  }
+
+  function buildPrompt() {
+    const skills = getAllSelectedSkills();
+    let ok = true;
+    if (!getLevel()) { document.getElementById('field-level').classList.add('error'); ok = false; }
+    if (!skills.length) { document.getElementById('field-skills').classList.add('error'); ok = false; }
+    if (!getFormats().length) { document.getElementById('field-format').classList.add('error'); ok = false; }
+    if (!ok) return;
+
+    const formats = getFormats();
+    const formatLine = formats.length === 1 ? formats[0] : formats.slice(0,-1).join(', ') + ', and ' + formats[formats.length-1];
+    const struggling = document.getElementById('struggling-text').value.trim();
+    const sample = document.getElementById('draft-text').value.trim();
+    const scoreBlock = getASVABScoreSection();
+
+    const difficultyLine = {
+      foundational: 'All problems should be foundational and confidence-building. Avoid tricky edge cases.',
+      mixed: 'Progress from foundational problems to more challenging ones.',
+      challenging: 'Emphasize challenging problems typical of the harder end of the ASVAB Math subtests.'
+    }[difficulty];
+
+    showPrompt(`You are a math tutor assistant helping a student prepare for the ${TEST_NAME} subtests: Arithmetic Reasoning (AR) and Mathematics Knowledge (MK). Generate a student-facing practice worksheet.
+
+Student-facing means: no answers, no answer key language, no meta-commentary about the worksheet appear in the WORKSHEET section. Keep each section cleanly separated.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STUDENT CONTEXT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STUDENT SKILL LEVEL: ${getLevel()}
+TEST PREP TARGET: ${TEST_NAME}
+SESSION LENGTH: 60 minutes
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+WORKSHEET DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SKILL(S): ${skills.join(', ')}
+FORMAT: ${formatLine}
+NUMBER OF PROBLEMS: ${qty}
+${scoreBlock}${struggling ? `\nSPECIFIC STRUGGLES:\n${struggling}\nPrioritize problems that directly address these patterns.\n` : ''}${sample ? `\nSAMPLE PROBLEM / STUDENT WORK:\n${sample}\nBuild at least 3 problems around this example or error pattern.\n` : ''}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+REQUIREMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+• Calibrate all problems to the ASVAB Math subtests: AR problems must be word-problem based with realistic applied contexts; MK problems test pure math knowledge with direct, non-contextual stems.
+• NON-NEGOTIABLE: Multiple choice: 4 options (ASVAB style). One correct, three wrong — each must represent a distinct error type. No two distractors may stem from the same mistake.
+• NON-NEGOTIABLE: Before finalizing each problem, verify the full solution top-to-bottom with the chosen values to confirm it produces a clean, unambiguous answer before writing the distractors.
+• Show your work: leave space for student work. Full step-by-step solutions in the answer key only.
+• Error identification: one mistake in a fully worked problem. Student finds and corrects it.
+• Fill in the blank: student completes a missing step or value in a partially worked problem.
+• ${difficultyLine}
+• AR contexts should be realistic and military-adjacent or everyday (fuel, distance, pay, supplies, time). MK problems should be clean, direct, and notation-accurate.
+• Avoid calculator-dependent problems — the ASVAB Math subtests are typically taken without a calculator.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OUTPUT STRUCTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. WORKSHEET — student-facing problems only. No answers visible. When multiple problems share the same data set, table, or scenario, group them together with a clear header above the shared material: "For problems [X–Y], use the following [table/scenario]." The shared material appears in full before the first problem in the group. Do not repeat it between problems in the same group.
+Close this section with: [Compliance: Worksheet — X problems, shared material grouped Y/N, no answers visible Y/N]
+2. ANSWER KEY — complete step-by-step solution per problem. For MC, name the correct answer and explain why each wrong answer is wrong.
+Close this section with: [Compliance: Answer Key — X entries, step-by-step solution provided Y/N]
+3. STUDY TIPS & SELF-CHECK — fits on up to two printed pages. Do not explain or teach the concept. Write directly to the student using "you" language.
+   a. TIPS (3–5 items): One sentence each. Practical strategies for this specific skill only — what to do, look for, or try when stuck. No theory.
+   b. SELF-CHECK (3–4 items): One sentence each. Questions the student asks themselves before submitting. Actionable and specific to this skill.
+Close this section with: [Compliance: Study Tips — X tips, Y checklist items, student-facing language Y/N]
+
+Perform a silent internal audit before producing any output: confirm all problems are solvable as written, all solutions are mathematically correct, AR problems use applied word-problem contexts, MK problems use direct math stems, and any shared data sets appear once above the first problem in their group with a correct "For problems [X–Y]" header. Fix any issues before outputting. Do not include a visible audit section in the output.
+
+After all three sections, format the complete output as a Word document (.docx) and offer it for download.`);
+  }
+</script>
+</body>
+</html>

@@ -19,6 +19,7 @@
     <a href="math-ged.html" class="nav-sub-link">GED</a>
     <a href="math-sat.html" class="nav-sub-link">SAT</a>
     <a href="math-tsi.html" class="nav-sub-link">TSI</a>
+    <a href="math-asvab.html" class="nav-sub-link">ASVAB</a>
   </div>
 </nav>
 <div class="breadcrumb"><a href="index.html">Home</a> / <a href="math.html">Math</a> / Courses</div>
@@ -234,70 +235,32 @@ SKILL: ${skill.dataset.skill}
 FORMAT: ${formatLine}
 NUMBER OF PROBLEMS: ${qty}
 ${struggling ? `\nSPECIFIC STRUGGLES:\n${struggling}\nPrioritize problems that directly address these patterns.\n` : ''}${sample ? `\nSAMPLE PROBLEM / STUDENT WORK:\n${sample}\nBuild at least 3 problems around this example or error pattern.\n` : ''}
-DIFFICULTY: ${difficultyLine}
-
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-MODULAR WORKFLOW — FOLLOW IN ORDER
+REQUIREMENTS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-STEP 0 — CLARIFY (MANDATORY — DO NOT SKIP)
-• Before generating the worksheet, ask exactly 2 targeted clarifying questions.
-• Questions must be specific and directly impact worksheet design (e.g., topic preference, reading length tolerance, timing, or test conditions).
-• Do not generate any part of the worksheet until the user responds.
-• If the user does not respond, ask again once. If still no response, proceed using defaults aligned with the student score.
-
-STEP 1 — GENERATE PROBLEMS
-• Generate all problems first, without answers or distractors.
-• For each format included:
-  - Multiple choice: write the stem and scenario only — no options yet.
-  - Show your work: write the problem and leave space for student work.
-  - Error identification: write a fully worked solution containing exactly one mistake.
-  - Fill in the blank / graph interpretation / match: write the complete problem.
-• When multiple problems share the same data set, table, chart, or scenario, place that material once above the first problem in the group with the header: "For problems [X–Y], use the following [table/chart/scenario]."
-• Use realistic, concrete numbers. Avoid artificially complex values unless the skill requires it. Word problems should use clear, direct language.
-
-STEP 2 — CREATE LOCKED ANSWER SEQUENCE (MULTIPLE CHOICE ONLY)
-• Internally generate a correct-answer position sequence covering all MC problems.
-• Use only letters A, B, C, D.
-• No letter may appear more than twice consecutively.
-• The sequence must appear irregular — avoid repeating patterns like ABCDABCD.
-• Lock this sequence before proceeding. It determines where the correct answer will be placed, not what the correct answer is.
-
-STEP 3 — SOLVE AND ASSIGN
-• Solve each problem fully to determine the correct value or answer.
-• For MC problems: place the correct answer in the slot indicated by the locked sequence. Build the remaining slots around it.
-• Verify that the correct value is in the assigned slot and the problem is solvable as written.
-
-STEP 4 — GENERATE DISTRACTORS (MULTIPLE CHOICE ONLY)
-• For each MC problem:
-  1. Identify the specific misconception or arithmetic error each distractor will represent — do this before writing the distractor.
-  2. No two distractors may stem from the same mistake.
-  3. At least one distractor must be "second-best": it passes a quick read but is eliminated by a specific word, condition, or qualifier in the problem. Name what makes it wrong in the answer key.
-  4. Obvious tells are prohibited: the correct answer may not be the longest option, the most hedged or qualified option, or grammatically inconsistent with the question stem.
-
-STEP 5 — INTERNAL AUDIT (STRICT — FIX BEFORE OUTPUTTING)
-• Reconstruct the correct-answer sequence from the completed MC problems. Confirm no letter appears more than twice consecutively.
-• Confirm all solutions are mathematically correct.
-• Confirm all distractors target distinct errors and at least one per MC problem is genuinely second-best.
-• Confirm show-your-work and error-identification problems contain no answers or solutions in the worksheet section.
-• Confirm shared materials appear once, above the first problem in their group, with a correct "For problems [X–Y]" header.
-• Confirm total problem count matches the requested quantity.
-• Fix any failures before outputting. Do not include a visible audit section in the output.
+• Problems must require active thinking and solving — not just reading or copying.
+• NON-NEGOTIABLE: Each wrong answer must represent a distinct error type — no two distractors may stem from the same mistake.
+• NON-NEGOTIABLE: Before finalizing each problem, verify the full solution top-to-bottom with the chosen values to confirm it produces a clean, unambiguous answer before writing the distractors.
+• Show your work problems: leave space for student work. Full step-by-step solutions in the answer key only.
+• Error identification: show a fully worked problem with exactly one mistake. Student finds and corrects it.
+• ${difficultyLine}
+• Use realistic, concrete numbers. Avoid artificially complex values unless the skill requires it.
+• Word problems should use clear, direct language.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-STEP 6 — FINAL OUTPUT
+OUTPUT STRUCTURE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 1. WORKSHEET — student-facing problems only. No answers or solutions visible.
-Close this section with: [Compliance: Worksheet — X problems, shared material grouped Y/N, no answers visible Y/N]
 
-2. ANSWER KEY — complete step-by-step solution for every problem. For multiple choice, name the correct answer letter and explain in one sentence why each wrong answer is wrong.
-Close this section with: [Compliance: Answer Key — X entries, step-by-step solution provided Y/N]
+2. ANSWER KEY — complete step-by-step solution for every problem. For multiple choice, name the correct answer and explain in one sentence why each wrong answer is wrong.
 
-3. STUDY TIPS & SELF-CHECK — fits on up to two printed pages. Do not explain or teach the concept. Write directly to the student using "you" language.
+3. STUDY TIPS & SELF-CHECK — fits on one printed page. Do not explain or teach the concept. Write directly to the student using "you" language.
    a. TIPS (3–5 items): One sentence each. Practical strategies for this specific skill only — what to do, look for, or try when stuck. No theory.
    b. SELF-CHECK (3–4 items): One sentence each. Questions the student asks themselves before submitting. Actionable and specific to this skill.
-Close this section with: [Compliance: Study Tips — X tips, Y checklist items, student-facing language Y/N]
+
+Perform a silent internal audit before producing any output: confirm all problems are solvable as written, all solutions are mathematically correct, and problems match the skill and format specified. Fix any issues before outputting. Do not include a visible audit section in the output.
 
 After all three sections, format the complete output as a Word document (.docx) and offer it for download.`;
 

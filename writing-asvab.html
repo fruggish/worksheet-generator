@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASVAB Verbal — Tutoring Center</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-brand"><div class="nav-icon">🎓</div><span class="nav-title">Tutoring Center</span></a>
+  <div class="nav-links">
+    <a href="writing.html" class="nav-link active">Writing</a>
+    <a href="math.html" class="nav-link">Math</a>
+  </div>
+  <div class="nav-sub">
+    <a href="writing-general.html" class="nav-sub-link">General</a>
+    <a href="writing-ged.html" class="nav-sub-link">GED</a>
+    <a href="writing-sat.html" class="nav-sub-link">SAT</a>
+    <a href="writing-tsi.html" class="nav-sub-link">TSI</a>
+    <a href="writing-asvab.html" class="nav-sub-link active">ASVAB</a>
+  </div>
+</nav>
+<div class="breadcrumb"><a href="index.html">Home</a> / <a href="writing.html">Writing</a> / ASVAB Verbal</div>
+
+<div class="layout">
+  <div class="form-panel">
+    <div class="panel-title">📋 ASVAB — Verbal (WK & PC)</div>
+
+    <div class="field" id="field-level">
+      <div class="field-label">Student Skill Level <span class="badge">required</span></div>
+      <div class="field-hint">Pick the closest match, then add context below.</div>
+      <select id="select-level" onchange="clearErr('field-level')">
+        <option value="">— Select a skill level —</option>
+        <option value="Beginner — new to academic reading and vocabulary; needs foundational guidance">Beginner — new to this material</option>
+        <option value="Developing — understands basics but makes consistent, patterned errors">Developing — consistent, patterned errors</option>
+        <option value="Intermediate — solid structure; struggles with nuance and harder vocabulary">Intermediate — struggles with nuance</option>
+        <option value="Advanced — strong reader who needs refinement and harder word-level challenge">Advanced — needs harder challenge</option>
+        <option value="Multilingual learner — vocabulary and sentence-level focus; avoid idiom-heavy explanations">Multilingual learner</option>
+        <option value="Anxious or avoidant — needs confidence-building; frame as low-stakes exploration">Anxious / avoidant — needs confidence-building</option>
+      </select>
+      <div class="val-msg" id="val-level">Please select a skill level.</div>
+      <div style="margin-top:6px;"><div style="font-size:11px;color:var(--gray-3);margin-bottom:4px;">Optional: add more context</div><input type="text" id="custom-level" placeholder="Optional: e.g. 'testing in 3 weeks' or 'Army enlistment goal'"></div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">AFQT Composite Score <span class="badge">optional</span></div>
+      <div class="field-hint">Percentile score (0–99) from score report. Minimum by branch: Army 31 · Marines 32 · Navy 35 · Air Force/Space Force 36 · Coast Guard 40. If blank, skill level and difficulty are used instead.</div>
+      <input type="text" id="afqt-input" placeholder="e.g. 42" style="max-width:120px;">
+    </div>
+
+    <div class="field">
+      <div class="field-label">Subtest Standard Score <span class="badge">optional</span></div>
+      <div class="field-hint">Individual WK or PC score (scale 20–80). Below 40 = significant gaps. 40–49 = approaching average. 50+ = at or above average. If blank, AFQT and skill level are used instead.</div>
+      <input type="text" id="subtest-input" placeholder="e.g. 44" style="max-width:120px;">
+    </div>
+
+    <div class="field" id="field-skills">
+      <div class="field-label">ASVAB Verbal Skills <span class="badge">required</span></div>
+      <div class="field-hint">Core verbal skills tested on the ASVAB. Select one or more.</div>
+      <div class="chips-wrap" id="chips">
+        <div class="chip" data-skill="Word Knowledge — synonyms in isolation" onclick="toggleChip(this)">Synonyms in isolation</div>
+        <div class="chip" data-skill="Word Knowledge — meaning from context clues" onclick="toggleChip(this)">Context clues</div>
+        <div class="chip" data-skill="Word Knowledge — prefixes, suffixes & roots" onclick="toggleChip(this)">Prefixes, suffixes & roots</div>
+        <div class="chip" data-skill="Word Knowledge — tone & connotation" onclick="toggleChip(this)">Tone & connotation</div>
+        <div class="chip" data-skill="Word Knowledge — formal vs. informal register" onclick="toggleChip(this)">Formal vs. informal register</div>
+        <div class="chip" data-skill="Paragraph Comprehension — main idea & central purpose" onclick="toggleChip(this)">Main idea & central purpose</div>
+        <div class="chip" data-skill="Paragraph Comprehension — inference & interpretation" onclick="toggleChip(this)">Inference & interpretation</div>
+        <div class="chip" data-skill="Paragraph Comprehension — author's purpose & point of view" onclick="toggleChip(this)">Author's purpose & POV</div>
+        <div class="chip" data-skill="Paragraph Comprehension — supporting details" onclick="toggleChip(this)">Supporting details</div>
+        <div class="chip" data-skill="Paragraph Comprehension — vocabulary in context" onclick="toggleChip(this)">Vocabulary in context</div>
+      </div>
+      <div class="chip-note">Select one or more.</div>
+      <span class="other-skills-toggle" id="other-skills-btn" onclick="toggleOtherSkills()">▼ Other skills</span>
+      <div class="other-skills-section" id="other-skills-section">
+        <div class="other-skills-label">Additional skills not specific to ASVAB Verbal</div>
+        <div class="chips-wrap" id="other-skills-chips"></div>
+      </div>
+      <div class="val-msg" id="val-skills">Please select at least one skill.</div>
+    </div>
+
+    <div class="field" id="field-format">
+      <div class="field-label">Question Format <span class="badge">required</span></div>
+      <div class="field-hint" id="format-hint">Select a skill above to see formats.</div>
+      <div class="format-grid" id="format-grid"></div>
+      <div class="val-msg" id="val-format">Please select at least one format.</div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Difficulty</div>
+      <div class="toggle-row">
+        <button class="toggle-btn" id="diff-foundational" onclick="setDifficulty('foundational')">Foundational</button>
+        <button class="toggle-btn active" id="diff-mixed" onclick="setDifficulty('mixed')">Mixed</button>
+        <button class="toggle-btn" id="diff-challenging" onclick="setDifficulty('challenging')">Challenging</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">What the Student is Struggling With <span class="badge">optional</span></div>
+      <div class="field-hint">Be specific — this shapes the questions more than any other field.</div>
+      <textarea id="struggling-text" style="min-height:56px;" placeholder="e.g. Confuses words that look similar (affect/effect) or struggles to narrow down two close answer choices"></textarea>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Student's Draft Text <span class="badge">optional</span></div>
+      <textarea id="draft-text" style="min-height:56px;" placeholder="Paste a passage or student writing sample to build questions around"></textarea>
+    </div>
+
+    <div class="field">
+      <div class="field-label">Number of Questions</div>
+      <div class="stepper">
+        <button onclick="changeQty(-1)">−</button>
+        <div class="qty" id="qty-display">10</div>
+        <span style="font-size:13px;font-weight:600;color:var(--gray-4);padding-left:8px;line-height:36px;">questions</span>
+        <button onclick="changeQty(1)">+</button>
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="buildPrompt()">⚡ Build Prompt</button>
+  </div>
+
+  <div class="output-panel">
+    <div class="output-header">
+      <h2>📄 Your Prompt <button class="copy-btn" id="copy-btn" onclick="copyPrompt()" style="display:none;">📋 Copy Prompt</button></h2>
+    </div>
+    <div id="empty-state" class="empty-state">
+      <div class="es-icon">📋</div>
+      <h3>Your prompt will appear here</h3>
+      <p>Fill in the fields and click Build Prompt.</p>
+      <div class="step-list">
+        <span>1. Fill in the fields</span>
+        <span>2. Click Build Prompt</span>
+        <span>3. Click inside the box → Ctrl+A → Ctrl+C</span>
+        <span>4. Paste into Claude or ChatGPT</span>
+      </div>
+    </div>
+    <textarea id="prompt-output" class="prompt-box" style="display:none;" readonly onclick="this.select()"></textarea>
+    <div id="copy-hint" class="copy-hint">✓ Text selected — press Ctrl+C to copy</div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+  const TEST_NAME = 'ASVAB — Word Knowledge (WK) and Paragraph Comprehension (PC)';
+
+  const otherSkills = [
+    {skill:'Inference & interpretation',label:'Inference & interpretation'},
+    {skill:"Author's purpose & point of view",label:"Author's purpose & POV"},
+    {skill:'Text structure & organization',label:'Text structure & organization'},
+    {skill:'Cross-text comparison',label:'Cross-text comparison'},
+    {skill:'Evaluating arguments & claims',label:'Evaluating arguments & claims'},
+    {skill:'Identifying supporting evidence',label:'Identifying supporting evidence'},
+    {skill:'Transitions',label:'Transitions'},
+    {skill:'Comma splices & punctuation',label:'Comma splices & punctuation'},
+    {skill:'Sentence-level editing',label:'Sentence-level editing'}
+  ];
+
+  const formatMap = {
+    'Word Knowledge — synonyms in isolation': [
+      {fmt:'4-option multiple choice (ASVAB style — synonym)',name:'MC — Synonym',desc:'4 options; choose the word closest in meaning'},
+      {fmt:'fill in the blank — best word choice',name:'Fill in the Blank',desc:'Choose the best word to complete the sentence'},
+      {fmt:'error identification — word used incorrectly',name:'Error ID',desc:'Find the word used with the wrong meaning'}
+    ],
+    'Word Knowledge — meaning from context clues': [
+      {fmt:'4-option multiple choice (ASVAB style — synonym)',name:'MC — Synonym',desc:'4 options; choose the word closest in meaning'},
+      {fmt:'4-option multiple choice (ASVAB style — context sentence)',name:'MC — In Context',desc:'Word used in a sentence; choose the best meaning'},
+      {fmt:'fill in the blank — best word choice',name:'Fill in the Blank',desc:'Choose the best word to complete the sentence'}
+    ],
+    'Word Knowledge — prefixes, suffixes & roots': [
+      {fmt:'4-option multiple choice (ASVAB style — synonym)',name:'MC — Synonym',desc:'4 options; choose the word closest in meaning'},
+      {fmt:'4-option multiple choice (ASVAB style — context sentence)',name:'MC — In Context',desc:'Word used in a sentence; choose the best meaning'},
+      {fmt:'fill in the blank — best word choice',name:'Fill in the Blank',desc:'Choose the best word to complete the sentence'},
+      {fmt:'error identification — word used incorrectly',name:'Error ID',desc:'Find the word used with the wrong meaning'}
+    ],
+    'Word Knowledge — tone & connotation': [
+      {fmt:'4-option multiple choice (ASVAB style — context sentence)',name:'MC — In Context',desc:'Word used in a sentence; choose the best meaning'},
+      {fmt:'fill in the blank — best word choice',name:'Fill in the Blank',desc:'Choose the word that best fits the tone'},
+      {fmt:'error identification — word used incorrectly',name:'Error ID',desc:'Find the word that creates the wrong tone'}
+    ],
+    'Word Knowledge — formal vs. informal register': [
+      {fmt:'4-option multiple choice (ASVAB style — context sentence)',name:'MC — In Context',desc:'Choose the word appropriate for the register'},
+      {fmt:'fill in the blank — best word choice',name:'Fill in the Blank',desc:'Choose the word that fits the context'},
+      {fmt:'error identification — word used incorrectly',name:'Error ID',desc:'Find the word that breaks register'}
+    ],
+    'Paragraph Comprehension — main idea & central purpose': [
+      {fmt:'4-option multiple choice (ASVAB style — passage-based)',name:'MC — Passage',desc:'4 options; one best answer from a short passage'},
+      {fmt:'passage-based short response',name:'Short Response',desc:'Identify and explain the main idea in 1–2 sentences'}
+    ],
+    'Paragraph Comprehension — inference & interpretation': [
+      {fmt:'4-option multiple choice (ASVAB style — passage-based)',name:'MC — Passage',desc:'4 options; what can be inferred?'},
+      {fmt:'passage-based short response',name:'Short Response',desc:'Explain the inference with evidence from the passage'}
+    ],
+    "Paragraph Comprehension — author's purpose & point of view": [
+      {fmt:'4-option multiple choice (ASVAB style — passage-based)',name:'MC — Passage',desc:'4 options; why did the author write this?'},
+      {fmt:'passage-based short response',name:'Short Response',desc:'Identify purpose and cite supporting evidence'}
+    ],
+    'Paragraph Comprehension — supporting details': [
+      {fmt:'4-option multiple choice (ASVAB style — passage-based)',name:'MC — Passage',desc:'4 options; which detail supports the main idea?'},
+      {fmt:'passage-based short response',name:'Short Response',desc:'Find and explain the supporting detail'},
+      {fmt:'error identification — word used incorrectly',name:'Error ID',desc:'Which answer misreads or misrepresents the passage?'}
+    ],
+    'Paragraph Comprehension — vocabulary in context': [
+      {fmt:'4-option multiple choice (ASVAB style — passage-based)',name:'MC — Passage',desc:'4 options; what does this word mean as used here?'},
+      {fmt:'fill in the blank — best word choice',name:'Fill in the Blank',desc:'Choose the best replacement for the underlined word'}
+    ],
+    'Inference & interpretation': [
+      {fmt:'4-option multiple choice (ASVAB style — passage-based)',name:'MC — Passage',desc:'4 options; what can be inferred?'},
+      {fmt:'passage-based short response',name:'Short Response',desc:'Explain the inference with evidence'}
+    ],
+    "Author's purpose & point of view": [
+      {fmt:'4-option multiple choice (ASVAB style — passage-based)',name:'MC — Passage',desc:'4 options; why did the author write this?'},
+      {fmt:'passage-based short response',name:'Short Response',desc:'Identify purpose and cite evidence'}
+    ],
+    'Text structure & organization': [
+      {fmt:'4-option multiple choice (ASVAB style — passage-based)',name:'MC — Passage',desc:'4 options; how is this passage organized?'}
+    ],
+    'Cross-text comparison': [
+      {fmt:'4-option multiple choice (ASVAB style — passage-based)',name:'MC — Passage',desc:'4 options; how do these passages differ?'},
+      {fmt:'passage-based short response',name:'Short Response',desc:'Compare passages on a specific point'}
+    ],
+    'Evaluating arguments & claims': [
+      {fmt:'4-option multiple choice (ASVAB style — passage-based)',name:'MC — Passage',desc:'4 options; which weakens or strengthens the argument?'},
+      {fmt:'passage-based short response',name:'Short Response',desc:'Is the reasoning valid?'}
+    ],
+    'Identifying supporting evidence': [
+      {fmt:'4-option multiple choice (ASVAB style — passage-based)',name:'MC — Passage',desc:'4 options; which sentence supports the claim?'},
+      {fmt:'passage-based short response',name:'Short Response',desc:'Find and explain the evidence'}
+    ],
+    'Transitions': [
+      {fmt:'4-option multiple choice (ASVAB style — passage-based)',name:'MC — Passage',desc:'4 options; which transition best connects these ideas?'},
+      {fmt:'fill in the blank — best word choice',name:'Fill in the Blank',desc:'Choose the best transition word'}
+    ],
+    'Comma splices & punctuation': [
+      {fmt:'4-option multiple choice (ASVAB style — passage-based)',name:'MC — Passage',desc:'4 options; one correct'},
+      {fmt:'error identification — word used incorrectly',name:'Error ID',desc:'Find and name the error'}
+    ],
+    'Sentence-level editing': [
+      {fmt:'4-option multiple choice (ASVAB style — passage-based)',name:'MC — Passage',desc:'4 options; which version is correct?'},
+      {fmt:'error identification — word used incorrectly',name:'Error ID',desc:'Find and name the error'}
+    ]
+  };
+
+  buildOtherSkillsSection(otherSkills, toggleOtherChip);
+
+  function getAllSelectedSkills() {
+    return [
+      ...Array.from(document.querySelectorAll('#chips .chip.selected')),
+      ...Array.from(document.querySelectorAll('#other-skills-chips .chip.selected'))
+    ].map(c => c.dataset.skill);
+  }
+
+  function getSelectedFormatOptions() {
+    const skills = getAllSelectedSkills();
+    const seen = new Set(); const fmts = [];
+    for (const s of skills) for (const f of (formatMap[s] || [])) {
+      if (!seen.has(f.fmt)) { seen.add(f.fmt); fmts.push(f); }
+    }
+    return fmts;
+  }
+
+  function toggleChip(el) {
+    el.classList.toggle('selected');
+    clearErr('field-skills');
+    renderFormatCards(getSelectedFormatOptions());
+  }
+
+  function toggleOtherChip(el) {
+    el.classList.toggle('selected');
+    clearErr('field-skills');
+    renderFormatCards(getSelectedFormatOptions());
+  }
+
+  function getASVABScoreSection() {
+    const afqt = document.getElementById('afqt-input').value.trim();
+    const sub  = document.getElementById('subtest-input').value.trim();
+    if (!afqt && !sub) return '';
+    let block = '\n';
+    if (afqt) {
+      block += `AFQT COMPOSITE SCORE: ${afqt} (percentile)\n`;
+      block += `AFQT context: This is the enlistment eligibility score. Minimum by branch — Army: 31, Marines: 32, Navy: 35, Air Force/Space Force: 36, Coast Guard: 40. Below 31 = not yet eligible for most branches. Use this score to gauge overall verbal readiness and calibrate passage complexity.\n`;
+    }
+    if (sub) {
+      block += `SUBTEST STANDARD SCORE: ${sub} (scale 20–80)\n`;
+      block += `Subtest context: Below 40 = significant skill gaps. 40–49 = approaching average. 50–59 = average. 60+ = above average. Use this score to set item difficulty and prioritize the skill areas most predictive of this score range.\n`;
+    }
+    block += `Use whichever score(s) are provided to calibrate difficulty and prioritize skill gaps. If both fields are blank, rely on skill level and difficulty settings above.\n`;
+    return block;
+  }
+
+  function buildPrompt() {
+    const skills = getAllSelectedSkills();
+    let ok = true;
+    if (!getLevel()) { document.getElementById('field-level').classList.add('error'); ok = false; }
+    if (!skills.length) { document.getElementById('field-skills').classList.add('error'); ok = false; }
+    if (!getFormats().length) { document.getElementById('field-format').classList.add('error'); ok = false; }
+    if (!ok) return;
+
+    const scoreSection = getASVABScoreSection();
+
+    showPrompt(buildBasePrompt({
+      skillLine: skills.length === 1 ? `Focused skill: ${skills[0]}` : `Multiple skills: ${skills.join(', ')}`,
+      level: getLevel(),
+      formats: getFormats(),
+      test: TEST_NAME,
+      draft: document.getElementById('draft-text').value.trim(),
+      struggling: document.getElementById('struggling-text').value.trim(),
+      category: '',
+      sessionType: 'writing',
+      scoreSection: scoreSection ? scoreSection : undefined
+    }));
+  }
+</script>
+</body>
+</html>
