@@ -118,7 +118,7 @@ function showPrompt(promptText) {
   btn.classList.remove('copied');
 }
 
-function buildBasePrompt({ skillLine, level, formats, test, draft, struggling, category, sessionType, scoreSection }) {
+function buildBasePrompt({ skillLine, level, formats, test, draft, struggling, category, sessionType, scoreSection, challengingLine }) {
   const formatLine = formats.length === 1
     ? formats[0]
     : formats.slice(0, -1).join(', ') + ', and ' + formats[formats.length - 1];
@@ -134,17 +134,20 @@ function buildBasePrompt({ skillLine, level, formats, test, draft, struggling, c
     : '';
   const categoryLine = category ? `\nSKILL CATEGORY: ${category}` : '';
 
+  // Writing pages pass a test-specific challengingLine for vocabulary escalation.
+  // Math pages and any future non-writing pages fall back to the generic line.
+  const isWriting = sessionType === 'writing';
+  const defaultChallengingLine = 'Emphasize challenging questions and edge cases where the wrong answer is highly tempting.';
   const difficultyLine = {
     foundational: 'All questions should be foundational and confidence-building. Avoid tricky edge cases.',
     mixed: 'Progress from foundational questions to more challenging ones. Include a mix of difficulty.',
-    challenging: 'Emphasize challenging questions and edge cases where the wrong answer is highly tempting.'
+    challenging: (isWriting && challengingLine) ? challengingLine : defaultChallengingLine
   }[difficulty];
 
   const testReq = test
     ? `\n• This is test prep for the ${test}. Questions must closely resemble actual test items in format, reading level, and question style.`
     : '';
 
-  const isWriting = sessionType === 'writing';
 
   return `You are a ${isWriting ? 'writing' : 'math'} tutor assistant. Generate a student-facing practice worksheet.
 
@@ -165,62 +168,32 @@ SKILL(S): ${skillLine}
 FORMAT: ${formatLine}
 NUMBER OF QUESTIONS: ${qty}
 ${testSection}${scoreSection || ''}${draftSection}${strugglingSection}
-DIFFICULTY: ${difficultyLine}
-
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-MODULAR WORKFLOW — FOLLOW IN ORDER
+REQUIREMENTS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-STEP 0 — CLARIFY (MANDATORY — DO NOT SKIP)
-• Before generating the worksheet, ask exactly 2 targeted clarifying questions.
-• Questions must be specific and directly impact worksheet design (e.g., topic preference, reading length tolerance, timing, or test conditions).
-• Do not generate any part of the worksheet until the user responds.
-• If the user does not respond, ask again once. If still no response, proceed using defaults aligned with the student score.
-
-STEP 1 — GENERATE QUESTIONS
-• Generate all questions first, without answer choices or explanations.
 • Questions must require active thinking — not just copying or filling in a word.
+• NON-NEGOTIABLE: Each wrong answer must represent a distinct error type — no two distractors may stem from the same mistake.
+• ${difficultyLine}
 • Use realistic, college-level content (civic issues, workplace, academic writing, everyday scenarios).
 • Do not invent sources or citations. Use placeholders if needed: [Source: peer-reviewed article on X].${testReq}
-• When multiple questions share the same passage or source material, place that material once above the first question in the group with the header: "For questions [X–Y], use the following passage."
-
-STEP 2 — PLAN DISTRACTORS (MULTIPLE CHOICE ONLY)
-• For each MC question, before writing the answer choices:
-  1. Identify the correct answer and why it is correct.
-  2. Identify the specific error, misconception, or reasoning flaw each wrong answer will represent.
-  3. No two distractors may stem from the same mistake.
-  4. At least one distractor per question must be "second-best": it passes a quick read but is eliminated by a specific word, qualifier, or condition in the question or passage. Note what makes it wrong.
-  5. Obvious tells are prohibited: the correct answer may not be the longest option, the most hedged option, or grammatically inconsistent with the question stem.
-• Distribute correct answers across all option letters (A, B, C, D) throughout the worksheet. No letter may be correct more than twice consecutively.
-
-STEP 3 — WRITE ANSWER CHOICES
-• Write the answer choices for each MC question using the plan from Step 2.
-• Assign the correct answer to a letter that maintains the required distribution.
-• Ensure all options are parallel in structure and length where possible.
-
-STEP 4 — INTERNAL AUDIT (STRICT — FIX BEFORE OUTPUTTING)
-• Reconstruct the correct-answer sequence. Confirm no letter appears more than twice consecutively.
-• Confirm no invented facts, sources, or citations appear anywhere.
-• Confirm all questions match the skill(s) listed and the stated format.
-• Confirm all distractors target distinct errors and at least one per MC question is genuinely second-best.
-• Confirm shared passages or source material appear once above the first question in their group with a correct "For questions [X–Y]" header.
-• Confirm total question count matches the requested quantity.
-• Fix any failures before outputting. Do not include a visible audit section in the output.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-STEP 5 — FINAL OUTPUT
+OUTPUT STRUCTURE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-1. WORKSHEET — student-facing questions only. No answers visible.
+1. WORKSHEET — student-facing questions only. No answers visible. When multiple questions share the same passage or source material, group them together with a clear header above the passage: "For questions [X–Y], use the following passage." The passage appears in full before the first question in the group. Do not repeat the passage between questions in the same group.
 Close this section with: [Compliance: Worksheet — X questions, passage grouping applied Y/N, no answers visible Y/N]
 
-2. ANSWER KEY — correct answer letter + one-sentence rule explanation per question. For MC, name the correct answer and explain in one sentence why each wrong answer is wrong.
+2. ANSWER KEY — correct answer + one-sentence rule explanation per question.
 Close this section with: [Compliance: Answer Key — X entries, rule named for each Y/N]
 
 3. STUDY TIPS & SELF-CHECK — fits on up to two printed pages. Do not explain or teach the concept. Write directly to the student using "you" language.
    a. TIPS (3–5 items): One sentence each. Practical strategies for this specific skill only — what to do, look for, or try when stuck. No theory.
    b. SELF-CHECK (3–4 items): One sentence each. Questions the student asks themselves before submitting. Actionable and specific to this skill.
 Close this section with: [Compliance: Study Tips — X tips, Y checklist items, student-facing language Y/N]
+
+Perform a silent internal audit before producing any output: confirm no invented facts or sources, no ghostwriting, all questions match the skill(s) listed, and any shared passages or source material appear once above the first question in their group with a correct "For questions [X–Y]" header. Fix any issues before outputting. Do not include a visible audit section in the output.
 
 After all three sections, format the complete output as a Word document (.docx) and offer it for download.`;
 }
